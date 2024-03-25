@@ -126,7 +126,7 @@ module.exports = {
         // Créer un collecteur d'interaction pour les boutons de slot
         const filter = (i) => i.user.id === interaction.user.id;
         // 5 minutes de délai avant la suppression de l'interface
-        const collector = marchandMessage.createMessageComponentCollector({filter , time: minutesToMs(.05), dispose: true}); 
+        const collector = marchandMessage.createMessageComponentCollector({filter , time: minutesToMs(2), dispose: true});
         // Gérer les interactions avec les boutons
         collector.on('collect', async (buttonInteraction) => {
             // Gère les boutons sélectionné

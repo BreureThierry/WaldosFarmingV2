@@ -2,12 +2,13 @@
   "id": "407824558918467586",
   "nomServeur": "TusBluX",
   "nom": "tusblux",
-  "xp": 0,
+  "xp": 30,
   "inventaire": {
-    "money": 100,
+    "money": 130,
     "graine": {
-      "purple": 1,
-      "amnezia": 2
+      "purple": 0,
+      "amnezia": 3,
+      "kush": 0
     },
     "plante": {},
     "outils": {
@@ -18,33 +19,35 @@
   "plantations": {
     "slot1": {
       "type": "purple",
+      "fertilized": false,
+      "antiParasite": false,
       "niveau_arrosage": 7,
-      "plantingTime": 1711345196326,
-      "readyTime": 1711346096326,
-      "fertilized": true,
-      "antiParasite": false
+      "plantingTime": 1711347106860,
+      "readyTime": 1711348006860
     },
     "slot2": {
-      "type": "purple",
-      "fertilized": true,
+      "type": "amnezia",
+      "fertilized": false,
       "antiParasite": false,
       "niveau_arrosage": 7,
-      "plantingTime": 1711345212093,
-      "readyTime": 1711346112093
+      "plantingTime": 1711347129332,
+      "readyTime": 1711347729332
     },
     "slot3": {
-      "type": "aucune",
-      "fertilized": true,
-      "antiParasite": false,
-      "niveau_arrosage": 7
-    },
-    "slot4": {
-      "type": "purple",
+      "type": "amnezia",
       "fertilized": true,
       "antiParasite": false,
       "niveau_arrosage": 7,
-      "plantingTime": 1711345238482,
-      "readyTime": 1711346138482
+      "plantingTime": 1711347151909,
+      "readyTime": 1711347751909
+    },
+    "slot4": {
+      "type": "amnezia",
+      "plantingTime": 1711347166052,
+      "readyTime": 1711347766052,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
     }
   }
 }
