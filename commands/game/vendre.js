@@ -16,7 +16,9 @@ const color = config.bot.botColor;
 const devise = config.bot.devise;
 // IMAGES
 const imgSelling = './assets/img/marchand.png';
-let sellerOpen;
+let sellerOpen = false;
+let openedByUserId;
+
 client.login(process.env.token);
 
 module.exports = {
@@ -39,8 +41,20 @@ module.exports = {
         const user = await loadUser(interaction.user.id);
         if (!user) { return interaction.reply({ content: ">>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.", ephemeral: true}); }
 
-        if (sellerOpen) { return interaction.reply({ content: ">>> L'interface du marchand est déjà ouvert.", ephemeral: true }); }
+        // Vérifier si le menu marchand est ouvert
+        const userId = interaction.user.id;
+
+        if (openedByUserId === undefined) {
+            openedByUserId = userId;
+            sellerOpen = false;
+        }
+
+        if (sellerOpen && userId === openedByUserId) {
+            return interaction.reply({ content: ">>> L'interface du marchand est déjà ouverte.", ephemeral: true });
+        } 
         sellerOpen = true;
+        openedByUserId = userId;
+
         // Créer le bouton "Vendre" et la ligne d'action
         const vendrePlanteButton = new ButtonBuilder()
             .setCustomId('vendre_plante')

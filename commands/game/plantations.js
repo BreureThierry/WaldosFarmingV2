@@ -23,7 +23,10 @@ const imgharvest2 = './assets/img/harvest2.png';
 const imgharvest3 = './assets/img/harvest3.png';
 const imgharvest4 = './assets/img/harvest4.png';
 const imgplanting = './assets/img/planter.png';
-let menuOpen;
+
+let menuOpen = false;
+let openedByUserId;
+
 client.login(process.env.token);
 
 module.exports = {
@@ -31,8 +34,20 @@ module.exports = {
         .setName('plantations')
         .setDescription('Affiche les plantations de l\'utilisateur'),
     async execute(interaction) {
-        if (menuOpen) { return interaction.reply({ content: ">>> L'interface est déjà ouvert.", ephemeral: true }); }
-        
+        // Vérifier si la plantation est ouverte
+        const userId = interaction.user.id;
+
+        if (openedByUserId === undefined) {
+            openedByUserId = userId;
+            menuOpen = false;
+        }
+
+        if (menuOpen && userId === openedByUserId) {
+            return interaction.reply({ content: ">>> L'interface est déjà ouverte.", ephemeral: true });
+        } 
+        menuOpen = true;
+        openedByUserId = userId;
+
         const date = new Date().toLocaleString();
         let slotActiv;
         // Charger la base de données
@@ -50,7 +65,7 @@ module.exports = {
         if (!user) { return interaction.reply({ content: ">>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.", ephemeral: true}); }
         if (!user.id) { return interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que ta sauvegarde soit défectueuse...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true}); }
         
-        menuOpen = true;
+        
         
         // Récupère les plantations de l'utilisateur
         const userPlantations = user.plantations;
@@ -497,6 +512,7 @@ module.exports = {
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image0] , fetchReply: true });
                             
                             try {
+                                menuOpen = false;
                                 // Enregistrer dans la base de donnée
                                 await saveDb(interaction.user.id, user);
                                 slotRow.components[0].setDisabled(false);
@@ -544,6 +560,7 @@ module.exports = {
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image1] , fetchReply: true });
 
                             try {
+                                menuOpen = false;
                                 // Enregistrer dans la base de donnée
                                 await saveDb(interaction.user.id, user);
                                 slotRow.components[0].setDisabled(false);
@@ -599,6 +616,7 @@ module.exports = {
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image2] , fetchReply: true });
 
                             try {
+                                menuOpen = false;
                                 // Enregistrer dans la base de donnée
                                 await saveDb(interaction.user.id, user);
                                 slotRow.components[0].setDisabled(false);
@@ -656,6 +674,7 @@ module.exports = {
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image3] , fetchReply: true });
 
                             try {
+                                menuOpen = false;
                                 // Enregistrer dans la base de donnée
                                 await saveDb(interaction.user.id, user);
                                 slotRow.components[0].setDisabled(false);
@@ -717,6 +736,7 @@ module.exports = {
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image4] , fetchReply: true });
 
                             try {
+                                menuOpen = false;
                                 // Enregistrer dans la base de donnée
                                 await saveDb(interaction.user.id, user);
                                 slotRow.components[0].setDisabled(false);

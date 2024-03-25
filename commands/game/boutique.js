@@ -6,15 +6,13 @@ const color = config.bot.botColor;
 const devise = config.bot.devise;
 // FONCTIONS
 const { loadUser } = require('../../fonctions.js');
-let shopOpen;
-
+let shopOpen = false;
+let openedByUserId;
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('boutique')
         .setDescription('Affiche la boutique Waldos'),
     async execute(interaction) {
-        // Charger les données
-        // const database = JSON.parse(fs.readFileSync("./database/database.json", 'utf8'));
         // Charger la base de données
         const date = new Date().toLocaleString();
         try {
@@ -27,8 +25,19 @@ module.exports = {
         }
         
         // Vérifier si la boutique est ouverte
-        if (shopOpen) { return await interaction.reply({ content: `>>> La boutique est déjà ouverte.`, ephemeral: true}); }
+        const userId = interaction.user.id;
+
+        if (openedByUserId === undefined) {
+            openedByUserId = userId;
+            shopOpen = false;
+        }
+
+        if (shopOpen && userId === openedByUserId) {
+            return interaction.reply({ content: ">>> L'interface de la boutique est déjà ouverte.", ephemeral: true });
+        } 
         shopOpen = true;
+        openedByUserId = userId;
+
         // Charger les données de l'utilisateur
         const user = await loadUser(interaction.user.id);
         if (!user) { return await interaction.reply({ content: `>>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.`, ephemeral: true}); }

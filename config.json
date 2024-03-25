@@ -6,7 +6,7 @@
     "farmingChannel": "1221140990002200588",
     "dureePousse": 10,
     "startMoney": 100,
-    "devMode": true,
+    "devMode": false,
     "devID": "407824558918467586"
   }
 }
