@@ -1,0 +1,12 @@
+{
+  "bot": {
+    "botId": "1189281736853569647",
+    "botColor": "#940bc5",
+    "devise": "$WL",
+    "farmingChannel": "1221140990002200588",
+    "dureePousse": 10,
+    "startMoney": 100,
+    "devMode": true,
+    "devID": "407824558918467586"
+  }
+}
