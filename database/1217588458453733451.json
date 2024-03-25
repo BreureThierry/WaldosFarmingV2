@@ -1,0 +1,29 @@
+{
+  "id": "1217588458453733451",
+  "nomServeur": "Mugiwara_no_r1",
+  "nom": "mugiwara_no_r1",
+  "xp": 0,
+  "inventaire": {
+    "money": 91,
+    "graine": {
+      "amnezia": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "amnezia",
+      "plantingTime": 1710963006403,
+      "readyTime": 1710963606403,
+      "niveau_arrosage": 2,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

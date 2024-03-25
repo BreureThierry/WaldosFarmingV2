@@ -1,0 +1,52 @@
+{
+  "id": "463545937797840907",
+  "nomServeur": "DFAM //30KILLS // GMFAM",
+  "nom": "30kills.",
+  "xp": 0,
+  "inventaire": {
+    "money": 65,
+    "graine": {
+      "kush": 3
+    },
+    "plante": {
+      "kush": 3
+    },
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "kush",
+      "plantingTime": 1710867747182,
+      "readyTime": 1710868347182,
+      "niveau_arrosage": 5,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "kush",
+      "plantingTime": 1710867698412,
+      "readyTime": 1710868298412,
+      "niveau_arrosage": 4,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "kush",
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 4,
+      "plantingTime": 1710867769769,
+      "readyTime": 1710868369769
+    },
+    "slot4": {
+      "type": "kush",
+      "plantingTime": 1710867782398,
+      "readyTime": 1710868382398,
+      "niveau_arrosage": 4,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

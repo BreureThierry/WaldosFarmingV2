@@ -1,0 +1,54 @@
+{
+  "id": "441933766852608000",
+  "nomServeur": "ricochicogg",
+  "nom": "ricochicogg",
+  "xp": 256,
+  "inventaire": {
+    "money": 1145,
+    "graine": {
+      "amnezia": 8,
+      "purple": 0,
+      "kush": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 6,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "kush",
+      "plantingTime": 1710186427524,
+      "readyTime": 1710187027524,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "kush",
+      "plantingTime": 1710186454316,
+      "readyTime": 1710187054316,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "amnezia",
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7,
+      "plantingTime": 1710186491368,
+      "readyTime": 1710187091368
+    },
+    "slot4": {
+      "type": "amnezia",
+      "plantingTime": 1710186515257,
+      "readyTime": 1710187115257,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "903027820425531392",
+  "nomServeur": "Avida",
+  "nom": "_avida",
+  "xp": 0,
+  "inventaire": {
+    "money": 62,
+    "graine": {
+      "kush": 1,
+      "purple": 1
+    },
+    "plante": {},
+    "outils": {}
+  },
+  "plantations": {
+    "slot1": {},
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

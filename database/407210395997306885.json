@@ -1,0 +1,52 @@
+{
+  "id": "407210395997306885",
+  "nomServeur": "Eeladnerb",
+  "nom": "eeladnerb",
+  "xp": 0,
+  "inventaire": {
+    "money": 40,
+    "graine": {
+      "purple": 5
+    },
+    "plante": {
+      "purple": 6
+    },
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1710974558987,
+      "readyTime": 1710975158987,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1710974581342,
+      "readyTime": 1710975181342,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1710974605590,
+      "readyTime": 1710975205590,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1710974627879,
+      "readyTime": 1710975227879,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

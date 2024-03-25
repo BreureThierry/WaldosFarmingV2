@@ -1,0 +1,57 @@
+{
+  "id": "438669011606044672",
+  "nomServeur": "Flo_The_Flow",
+  "nom": "scprac",
+  "xp": 6312,
+  "inventaire": {
+    "money": 1379,
+    "graine": {
+      "purple": 0,
+      "kush": 3,
+      "amnezia": 4
+    },
+    "plante": {
+      "kush": 2,
+      "amnezia": 10
+    },
+    "outils": {
+      "arrosoir": 6,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "amnezia",
+      "plantingTime": 1711202477003,
+      "readyTime": 1711203077003,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "amnezia",
+      "plantingTime": 1711202498663,
+      "readyTime": 1711203098663,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "amnezia",
+      "plantingTime": 1711202505705,
+      "readyTime": 1711203105705,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "amnezia",
+      "plantingTime": 1711202512625,
+      "readyTime": 1711203112625,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

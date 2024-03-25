@@ -1,0 +1,56 @@
+{
+  "id": "934516048777060352",
+  "nomServeur": "🍀Pa0li83🐝",
+  "nom": "paoli83_",
+  "xp": 0,
+  "inventaire": {
+    "money": 493,
+    "graine": {
+      "kush": 16,
+      "amnezia": 2,
+      "purple": 32
+    },
+    "plante": {
+      "kush": 0,
+      "amnezia": 2,
+      "purple": 425
+    },
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711202436100,
+      "readyTime": 1711203036100,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1711202507805,
+      "readyTime": 1711203107805,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1711202535990,
+      "readyTime": 1711203135990,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1711202577365,
+      "readyTime": 1711203177365,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

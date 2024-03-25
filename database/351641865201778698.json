@@ -1,0 +1,57 @@
+{
+  "id": "351641865201778698",
+  "nomServeur": "LaBrioche",
+  "nom": "labri0che",
+  "xp": 51350,
+  "inventaire": {
+    "money": 7024,
+    "graine": {
+      "purple": 32,
+      "kush": 6,
+      "amnezia": 11
+    },
+    "plante": {
+      "purple": 243,
+      "amnezia": 1
+    },
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711201305109,
+      "readyTime": 1711201905109,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1711201311546,
+      "readyTime": 1711201911546,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1711201317266,
+      "readyTime": 1711201917266,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1711201324780,
+      "readyTime": 1711201924780,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

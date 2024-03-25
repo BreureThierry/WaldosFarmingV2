@@ -1,0 +1,56 @@
+{
+  "id": "908092779085836359",
+  "nomServeur": "Antho-BALLS",
+  "nom": "antho168",
+  "xp": 34162,
+  "inventaire": {
+    "money": 3441,
+    "graine": {
+      "amnezia": 11,
+      "purple": 37,
+      "kush": 17
+    },
+    "plante": {
+      "purple": 55
+    },
+    "outils": {
+      "arrosoir": 4,
+      "fertilisant": 1,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711205383860,
+      "readyTime": 1711205983860,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1711205400512,
+      "readyTime": 1711206000512,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1711205407048,
+      "readyTime": 1711206007048,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1711205393735,
+      "readyTime": 1711205993735,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

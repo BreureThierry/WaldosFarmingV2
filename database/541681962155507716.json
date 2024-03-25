@@ -1,0 +1,57 @@
+{
+  "id": "541681962155507716",
+  "nomServeur": "Alfred Cooper",
+  "nom": "alfredcooper",
+  "xp": 4798,
+  "inventaire": {
+    "money": 1058,
+    "graine": {
+      "purple": 0,
+      "amnezia": 8,
+      "kush": 13
+    },
+    "plante": {
+      "purple": 3,
+      "amnezia": 6
+    },
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "amnezia",
+      "plantingTime": 1710599925372,
+      "readyTime": 1710600525372,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "amnezia",
+      "plantingTime": 1710599936802,
+      "readyTime": 1710600536802,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "amnezia",
+      "plantingTime": 1710599945958,
+      "readyTime": 1710600545958,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "amnezia",
+      "plantingTime": 1710599958117,
+      "readyTime": 1710600558117,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

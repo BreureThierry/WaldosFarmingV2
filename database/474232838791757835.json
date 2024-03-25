@@ -1,0 +1,27 @@
+{
+  "id": "474232838791757835",
+  "nomServeur": "NETOAAA-WALDOS",
+  "nom": "netoaaa",
+  "xp": 0,
+  "inventaire": {
+    "money": 60,
+    "graine": {
+      "purple": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 108076347109,
+      "readyTime": 108083547109,
+      "niveau_arrosage": 0
+    },
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

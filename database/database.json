@@ -1,0 +1,52 @@
+{
+    "objets": {
+        "graine": {
+            "kush": {
+                "prix": 3,
+                "description": "Graine de Kush, facile à cultiver.",
+                "exigence": 0,
+                "temps": 5
+            },
+            "amnezia": {
+                "prix": 4,
+                "description": "Graine d'Amnezia, demande un peu d'entretient.",
+                "exigence": 1,
+                "temps": 10
+            },
+            "purple": {
+                "prix": 5,
+                "description": "Graine de Purple, difficile à cultiver.",
+                "exigence": 2,
+                "temps": 15
+            }
+        },
+        "plante": {
+            "kush": {
+                "valeur": 6,
+                "description": "Une variétée facile à cultiver."
+            },
+            "amnezia": {
+                "valeur": 8,
+                "description": "Une variétée qui demande un peu d'entretient."
+            },
+            "purple": {
+                "valeur": 10,
+                "description": "Une variétée difficile à cultiver."
+            }
+        },
+        "outils": {
+            "arrosoir": {
+                "prix": 5,
+                "description": "Outil d'arrosage pour les plantes."
+            },
+            "fertilisant": {
+                "prix": 5,
+                "description": "Produit pour fertiliser le sol."
+            },
+            "produit_antiparasite": {
+                "prix": 10,
+                "description": "Produit pour lutter contre les parasites."
+            }
+        }
+    }
+}

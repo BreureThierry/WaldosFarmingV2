@@ -1,0 +1,18 @@
+{
+  "id": "954034466685349949",
+  "nomServeur": "girda-007",
+  "nom": "girda007",
+  "xp": 0,
+  "inventaire": {
+    "money": 100,
+    "graine": {},
+    "plante": {},
+    "outils": {}
+  },
+  "plantations": {
+    "slot1": {},
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

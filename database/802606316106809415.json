@@ -1,0 +1,24 @@
+{
+  "id": "802606316106809415",
+  "nomServeur": "BBR",
+  "nom": "bbr3z",
+  "xp": 0,
+  "inventaire": {
+    "money": 62,
+    "graine": {
+      "kush": 1
+    },
+    "plante": {
+      "kush": 1
+    },
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {},
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "215149863845888000",
+  "nomServeur": "Sklion",
+  "nom": "sklion.wlds",
+  "xp": 5744,
+  "inventaire": {
+    "money": 1271,
+    "graine": {
+      "kush": 29,
+      "amnezia": 8,
+      "purple": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711180705544,
+      "readyTime": 1711181305544,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1711180714013,
+      "readyTime": 1711181314013,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "amnezia",
+      "plantingTime": 1711180746116,
+      "readyTime": 1711181346116,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "amnezia",
+      "plantingTime": 1711180737346,
+      "readyTime": 1711181337346,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

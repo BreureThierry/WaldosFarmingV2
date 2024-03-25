@@ -1,0 +1,22 @@
+{
+  "id": "971262734291337247",
+  "nomServeur": "Chriss33 WALDOS",
+  "nom": "chriss33000waldos",
+  "xp": 0,
+  "inventaire": {
+    "money": 60,
+    "graine": {
+      "purple": 3
+    },
+    "plante": {},
+    "outils": {
+      "fertilisant": 5
+    }
+  },
+  "plantations": {
+    "slot1": {},
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

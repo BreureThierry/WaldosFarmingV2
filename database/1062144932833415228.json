@@ -1,0 +1,38 @@
+{
+  "id": "1062144932833415228",
+  "nomServeur": "Tonybot",
+  "nom": "tonybot.",
+  "xp": 0,
+  "inventaire": {
+    "money": 81,
+    "graine": {
+      "purple": 0,
+      "amnezia": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "amnezia",
+      "plantingTime": 1710320759223,
+      "readyTime": 1710321359223,
+      "niveau_arrosage": 7,
+      "fertilized": true,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1710320783589,
+      "readyTime": 1710321383589,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {},
+    "slot4": {}
+  }
+}

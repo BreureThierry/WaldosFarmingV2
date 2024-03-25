@@ -1,0 +1,53 @@
+{
+  "id": "805501761283686401",
+  "nomServeur": "[GG]aya83.eth[JKR]🪐🃏",
+  "nom": "gg_aya83.eth_jkr",
+  "xp": 142,
+  "inventaire": {
+    "money": 107,
+    "graine": {
+      "purple": 0,
+      "amnezia": 4
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7,
+      "plantingTime": 1710968414274,
+      "readyTime": 1710969014274
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1710968370426,
+      "readyTime": 1710968970426,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1710968441533,
+      "readyTime": 1710969041533,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1710968461675,
+      "readyTime": 1710969061675,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

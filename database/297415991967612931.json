@@ -1,0 +1,26 @@
+{
+  "id": "297415991967612931",
+  "nomServeur": "Fogou",
+  "nom": "fogou",
+  "xp": 188,
+  "inventaire": {
+    "money": 68,
+    "graine": {
+      "kush": 2,
+      "purple": 2,
+      "amnezia": 2
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {},
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

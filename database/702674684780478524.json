@@ -1,0 +1,18 @@
+{
+  "id": "702674684780478524",
+  "nomServeur": "Nesta29",
+  "nom": "nesta29",
+  "xp": 0,
+  "inventaire": {
+    "money": 100,
+    "graine": {},
+    "plante": {},
+    "outils": {}
+  },
+  "plantations": {
+    "slot1": {},
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

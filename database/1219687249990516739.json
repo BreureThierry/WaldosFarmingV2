@@ -1,0 +1,55 @@
+{
+  "id": "1219687249990516739",
+  "nomServeur": "Lmdc.nft",
+  "nom": "lmdc.nft",
+  "xp": 436,
+  "inventaire": {
+    "money": 264,
+    "graine": {
+      "kush": 0,
+      "purple": 18
+    },
+    "plante": {
+      "purple": 6
+    },
+    "outils": {
+      "arrosoir": 9,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711153469633,
+      "readyTime": 1711154069633,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1711153477468,
+      "readyTime": 1711154077468,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1711153484875,
+      "readyTime": 1711154084875,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1711153491257,
+      "readyTime": 1711154091257,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

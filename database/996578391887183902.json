@@ -1,0 +1,33 @@
+{
+  "id": "996578391887183902",
+  "nomServeur": "Subtile CEO des licornes 🦄",
+  "nom": "deletedaccount0969",
+  "xp": 0,
+  "inventaire": {
+    "money": 74,
+    "graine": {
+      "kush": 0,
+      "amnezia": 0
+    },
+    "plante": {
+      "kush": 2
+    },
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "kush",
+      "plantingTime": 1709884039640,
+      "readyTime": 1709884639640,
+      "niveau_arrosage": 9,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  }
+}

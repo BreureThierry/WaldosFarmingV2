@@ -1,0 +1,56 @@
+{
+  "id": "834354407642497025",
+  "nomServeur": "DEADPOOL™",
+  "nom": ".deadpool.666.",
+  "xp": 138,
+  "inventaire": {
+    "money": 50,
+    "graine": {
+      "amnezia": 0,
+      "purple": 0,
+      "kush": 0
+    },
+    "plante": {
+      "purple": 46
+    },
+    "outils": {
+      "arrosoir": 2,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711192733282,
+      "readyTime": 1711193333282,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1711192741315,
+      "readyTime": 1711193341315,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1711192751781,
+      "readyTime": 1711193351781,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1711192759092,
+      "readyTime": 1711193359092,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "290568179774652416",
+  "nomServeur": "Pichette",
+  "nom": "ladypiche",
+  "xp": 86,
+  "inventaire": {
+    "money": 121,
+    "graine": {
+      "purple": 0,
+      "amnezia": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "amnezia",
+      "plantingTime": 1709798830605,
+      "readyTime": 1709799430605,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "amnezia",
+      "plantingTime": 1709798839407,
+      "readyTime": 1709799439407,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1709798848859,
+      "readyTime": 1709799448859,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1709798864568,
+      "readyTime": 1709799464568,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "id": "638481011902119936",
+  "nomServeur": "ARMA62",
+  "nom": "arma62",
+  "xp": 490,
+  "inventaire": {
+    "money": 195,
+    "graine": {
+      "purple": 4,
+      "amnezia": 0,
+      "kush": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 8
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "amnezia",
+      "plantingTime": 1711149981599,
+      "readyTime": 1711150581599,
+      "niveau_arrosage": 7,
+      "fertilized": true,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "amnezia",
+      "plantingTime": 1711150000213,
+      "readyTime": 1711150600213,
+      "niveau_arrosage": 7,
+      "fertilized": true,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "kush",
+      "plantingTime": 1711150023469,
+      "readyTime": 1711150623469,
+      "niveau_arrosage": 7,
+      "fertilized": true,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "kush",
+      "plantingTime": 1711150043346,
+      "readyTime": 1711150643346,
+      "niveau_arrosage": 7,
+      "fertilized": true,
+      "antiParasite": false
+    }
+  }
+}

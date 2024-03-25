@@ -1,0 +1,57 @@
+{
+  "id": "689563298177351697",
+  "nomServeur": "Julien. f",
+  "nom": "julien.f9914",
+  "xp": 1040,
+  "inventaire": {
+    "money": 134,
+    "graine": {
+      "kush": 2,
+      "purple": 3,
+      "amnezia": 3
+    },
+    "plante": {
+      "kush": 3,
+      "amnezia": 8
+    },
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "amnezia",
+      "plantingTime": 1711149888921,
+      "readyTime": 1711150488921,
+      "niveau_arrosage": 8,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "amnezia",
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7,
+      "plantingTime": 1711149915152,
+      "readyTime": 1711150515152
+    },
+    "slot3": {
+      "type": "amnezia",
+      "plantingTime": 1711149936630,
+      "readyTime": 1711150536630,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "amnezia",
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7,
+      "plantingTime": 1711149968509,
+      "readyTime": 1711150568509
+    }
+  }
+}

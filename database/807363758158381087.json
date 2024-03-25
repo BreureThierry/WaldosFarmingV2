@@ -1,0 +1,54 @@
+{
+    "id": "807363758158381087",
+    "nomServeur": "tony2201/BALLS",
+    "nom": "tony2201",
+    "xp": 1000,
+    "inventaire": {
+      "money": 3159,
+      "graine": {
+        "purple": 1,
+        "amnezia": 6
+      },
+      "plante": {
+        "purple": 7,
+        "amnezia": 5
+      },
+      "outils": {
+        "arrosoir": 1
+      }
+    },
+    "plantations": {
+      "slot1": {
+        "type": "purple",
+        "plantingTime": 1711124960856,
+        "readyTime": 1711125560856,
+        "niveau_arrosage": 7,
+        "fertilized": false,
+        "antiParasite": false
+      },
+      "slot2": {
+        "type": "purple",
+        "plantingTime": 1711124995625,
+        "readyTime": 1711125595625,
+        "niveau_arrosage": 7,
+        "fertilized": false,
+        "antiParasite": false
+      },
+      "slot3": {
+        "type": "amnezia",
+        "plantingTime": 1711125033424,
+        "readyTime": 1711125633424,
+        "niveau_arrosage": 7,
+        "fertilized": false,
+        "antiParasite": false
+      },
+      "slot4": {
+        "type": "amnezia",
+        "plantingTime": 1711125077952,
+        "readyTime": 1711125677952,
+        "niveau_arrosage": 7,
+        "fertilized": false,
+        "antiParasite": false
+      }
+    }
+  }

@@ -1,0 +1,54 @@
+{
+  "id": "104293427415375872",
+  "nomServeur": "! Basta Psycho !",
+  "nom": "bastapsycho",
+  "xp": 6090,
+  "inventaire": {
+    "money": 1201,
+    "graine": {
+      "kush": 0,
+      "amnezia": 0,
+      "purple": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711051103475,
+      "readyTime": 1711051703475,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1711051108385,
+      "readyTime": 1711051708385,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1711051113285,
+      "readyTime": 1711051713285,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1711051194177,
+      "readyTime": 1711051794177,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}

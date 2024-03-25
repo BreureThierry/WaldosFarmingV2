@@ -1,0 +1,49 @@
+{
+  "id": "224511115080499200",
+  "nomServeur": "Schina Nessyra",
+  "nom": "schinanessyra",
+  "xp": 0,
+  "inventaire": {
+    "money": 5,
+    "graine": {
+      "kush": 0,
+      "amnezia": 0
+    },
+    "plante": {
+      "kush": 9,
+      "amnezia": 1
+    },
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 1,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "kush",
+      "plantingTime": 1710967756297,
+      "readyTime": 1710968356297,
+      "niveau_arrosage": 5,
+      "fertilized": true,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "kush",
+      "plantingTime": 1710967766956,
+      "readyTime": 1710968366956,
+      "niveau_arrosage": 5,
+      "fertilized": true,
+      "antiParasite": false
+    },
+    "slot3": {
+      "type": "kush",
+      "plantingTime": 1710967816090,
+      "readyTime": 1710968416090,
+      "niveau_arrosage": 5,
+      "fertilized": true,
+      "antiParasite": false
+    },
+    "slot4": {}
+  }
+}

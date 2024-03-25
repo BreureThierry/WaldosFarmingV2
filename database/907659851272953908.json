@@ -1,0 +1,52 @@
+{
+  "id": "907659851272953908",
+  "nomServeur": "[GGA] Khâx | XBorg",
+  "nom": "ggakhaxxborgrichcalls",
+  "xp": 1030,
+  "inventaire": {
+    "money": 190,
+    "graine": {
+      "purple": 1
+    },
+    "plante": {
+      "purple": 26
+    },
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1711144540624,
+      "readyTime": 1711145140624,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    },
+    "slot2": {
+      "type": "purple",
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7,
+      "plantingTime": 1711144561864,
+      "readyTime": 1711145161864
+    },
+    "slot3": {
+      "type": "purple",
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7,
+      "plantingTime": 1711144529523,
+      "readyTime": 1711145129523
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1711144593118,
+      "readyTime": 1711145193118,
+      "niveau_arrosage": 7,
+      "fertilized": false,
+      "antiParasite": false
+    }
+  }
+}
