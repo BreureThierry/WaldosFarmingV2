@@ -1,36 +1,37 @@
-const fs = require("fs");
+const fsp = require('fs').promises;
 
 async function saveDb(userId, data) {
   const date = new Date().toLocaleString();
-
-  if (!data) {
-    console.log(`${date} [saveDb] Aucune donnée n'a été collectée !`);
-    console.log('DATA : ' + data);
+  if (!data || !data.id) {
+    console.error(`${date} [saveDb] Aucune donnée n'a été collectée ! Sauvegarde annulée...`);
+    console.error('DATA : ', data);
     return; 
   }
   try {
-    await fs.promises.writeFile(`./database/${userId}.json`, JSON.stringify(data, null, 2));
+    await fsp.writeFile(`./database/${userId}.json`, JSON.stringify(data, null, 2));
     console.log(`${date} [saveDb] ${data.nomServeur} sauvegardé.`);
   } catch (error) {
-    console.log(`${date} [saveDb] Erreur lors de l'enregistrement de l'utilisateur dans la base de données.`);
-    console.log(error);
+    console.error(`${date} [saveDb] Erreur lors de l'enregistrement de l'utilisateur dans la base de données.`, error);
   }
 }
 async function loadUser(userId) {
   const filePath = `./database/${userId}.json`;
-  if (!fs.existsSync(filePath)) { return; }
-
   const date = new Date().toLocaleString();
 
   try {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const fileContent = await fsp.readFile(filePath, 'utf8');
+
+    if (!fileContent) {
+      console.error(`${date} [loadUser] Fichier JSON vide pour l'utilisateur (ID : ${userId}).`);
+      return {};
+    }
+
     const user = JSON.parse(fileContent);
-    
     console.log(`${date} [loadUser] ${user.nomServeur} chargé.`);
     return user;
   } catch (error) {
-      console.log(`${date} [loadUser] Erreur de chargement d'un utilisateur (ID : ${userId}).\n${error}`);
-      return {};
+    console.error(`${date} [loadUser] Erreur de chargement d'un utilisateur (ID : ${userId}).\n${error}`);
+    return null;
   }
 }
 function capitalize(mot) {
