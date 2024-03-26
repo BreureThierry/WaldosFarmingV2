@@ -14,10 +14,12 @@ module.exports = {
 
 		if (devMode) {
 			if (interaction.user.id != devID) {
-				console.log(`🆕 /${interaction.commandName} executée par ${interaction.user.globalName} || recalé par DEVMODE`);
-				await interaction.reply({ content: '🛠️ **Le bot est en maintenance...**', ephemeral: true });
+				console.log(`\x1b[33m🆕 /${interaction.commandName} executée par ${interaction.user.globalName} || BLOCK BY DEVMODE \x1b[37m`);
+				await interaction.reply({ content: '```🛠️  Le bot est en maintenance...```', ephemeral: true });
+				
 			} else {
 				try {
+					console.log(`\x1b[32m🆕 /${interaction.commandName} executée par ${interaction.user.globalName} DEVMODE ON\x1b[37m`);
 					await command.execute(interaction);
 				} catch (error) {
 					console.error(error);
@@ -33,7 +35,7 @@ module.exports = {
 			}
 		} else {
 			try {
-				console.log(`🆕 /${interaction.commandName} executée par ${interaction.user.globalName}`);
+				console.log(`\x1b[32m🆕 /${interaction.commandName} executée par ${interaction.user.globalName}\x1b[37m`);
 				await command.execute(interaction);
 			} catch (error) {
 				console.error(error);

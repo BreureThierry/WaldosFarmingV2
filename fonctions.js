@@ -3,15 +3,15 @@ const fsp = require('fs').promises;
 async function saveDb(userId, data) {
   const date = new Date().toLocaleString();
   if (!data || !data.id) {
-    console.error(`${date} [saveDb] Aucune donnée n'a été collectée ! Sauvegarde annulée...`);
+    console.error(`${date} [saveDb]\x1b[31m Aucune donnée n'a été collectée ! Sauvegarde annulée... \x1b[37m`);
     console.error('DATA : ', data);
     return; 
   }
   try {
     await fsp.writeFile(`./database/${userId}.json`, JSON.stringify(data, null, 2));
-    console.log(`${date} [saveDb] ${data.nomServeur} sauvegardé.`);
+    console.log(`${date} [saveDb]\x1b[34m ${data.nomServeur} sauvegardé. \x1b[37m`);
   } catch (error) {
-    console.error(`${date} [saveDb] Erreur lors de l'enregistrement de l'utilisateur dans la base de données.`, error);
+    console.error(`${date} [saveDb]\x1b[31m Erreur lors de l'enregistrement de l'utilisateur dans la base de données.\x1b[37m`, error);
   }
 }
 async function loadUser(userId) {
@@ -22,15 +22,15 @@ async function loadUser(userId) {
     const fileContent = await fsp.readFile(filePath, 'utf8');
 
     if (!fileContent) {
-      console.error(`${date} [loadUser] Fichier JSON vide pour l'utilisateur (ID : ${userId}).`);
+      console.error(`${date} [loadUser]\x1b[31m Fichier JSON vide pour l'utilisateur (ID : ${userId}).\x1b[37m`);
       return {};
     }
 
     const user = JSON.parse(fileContent);
-    console.log(`${date} [loadUser] ${user.nomServeur} chargé.`);
+    console.log(`${date} [loadUser]\x1b[35m ${user.nomServeur} chargé.\x1b[37m`);
     return user;
   } catch (error) {
-    console.error(`${date} [loadUser] Erreur de chargement d'un utilisateur (ID : ${userId}).\n${error}`);
+    console.error(`${date} [loadUser]\x1b[31m Erreur de chargement d'un utilisateur (ID : ${userId}).\x1b[37m\n${error}`);
     return null;
   }
 }
