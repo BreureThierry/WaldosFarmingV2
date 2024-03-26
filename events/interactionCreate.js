@@ -33,6 +33,7 @@ module.exports = {
 			}
 		} else {
 			try {
+				console.log(`🆕 /${interaction.commandName} executée par ${interaction.user.globalName}`);
 				await command.execute(interaction);
 			} catch (error) {
 				console.error(error);
