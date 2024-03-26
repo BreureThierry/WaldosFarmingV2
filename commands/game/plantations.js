@@ -9,13 +9,10 @@ const client = new Client({
 });
 const fs = require("fs");
 // FONCTIONS
-const { saveDb,loadUser,capitalize,hoursToMs,minutesToMs,formatMs,calculateHarvestAmount,updateUserInventory,randomSelection,randomAward,fileUrl } = require('../../fonctions.js');
+const { saveDb,loadUser,capitalize,minutesToMs,formatMs,calculateHarvestAmount,updateUserInventory,randomSelection,randomAward,fileUrl } = require('../../fonctions.js');
 // CONFIG
 const config = require('../../config.json');
 const color = config.bot.botColor;
-//TEMPS
-const hoursDuration = config.bot.dureePousse;
-const tempsDeCroissance = minutesToMs(hoursDuration);
 // IMAGES
 const imgharvest0 = './assets/img/harvest0.png';
 const imgharvest1 = './assets/img/harvest1.png';
@@ -517,7 +514,7 @@ module.exports = {
                             slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
                             slotEmbed.data.fields[2].value = "`⭕ Non traité`";
                             slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`Non défini`";
+                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
@@ -565,7 +562,7 @@ module.exports = {
                             slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
                             slotEmbed.data.fields[2].value = "`⭕ Non traité`";
                             slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`Non défini`";
+                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
@@ -623,7 +620,7 @@ module.exports = {
                             slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
                             slotEmbed.data.fields[2].value = "`⭕ Non traité`";
                             slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`Non défini`";
+                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
@@ -680,7 +677,7 @@ module.exports = {
                             slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
                             slotEmbed.data.fields[2].value = "`⭕ Non traité`";
                             slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`Non défini`";
+                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
@@ -742,7 +739,7 @@ module.exports = {
                             slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
                             slotEmbed.data.fields[2].value = "`⭕ Non traité`";
                             slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`Non défini`";
+                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
@@ -820,7 +817,7 @@ module.exports = {
                 } else {
                     statut = `\`Statut : 🕒 ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
                     if (isNaN(temps.hours) && isNaN(temps.minutes) && isNaN(temps.seconds)) {
-                        statut = `Non défini`;
+                        statut = `🕒 Non défini`;
                     }
                 }
                 let fert,antiP;
@@ -944,7 +941,6 @@ module.exports = {
         });
 
         collector.on('end', (message) => {
-            console.log('Fin de collecteur : plantations');
             interaction.followUp({ content: ">>> ⌛ **Ta plantation a expiré...**\n tape la commande \`/plantations\` pour y retourner. ", ephemeral: true }); 
             menuOpen = false;
             messagePlantations.delete(message);
