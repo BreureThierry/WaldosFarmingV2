@@ -65,8 +65,19 @@ module.exports = {
         if (!user) { return interaction.reply({ content: ">>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.", ephemeral: true}); }
         if (!user.id) { return interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que ta sauvegarde soit défectueuse...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true}); }
         
-        
-        
+        // DEBUG EMPTY DATA
+        // try {
+        //     // Arrose le slot
+        //     let userTest = {};
+        //     // Enregistrer dans la base de donnée
+        //     await saveDb(interaction.user.id, userTest);
+        //     return;
+        // } catch (error) {
+        //     await interaction.reply({ content: `>>> Donnée corrompue ! La sauvegarde a été empêchée par sécurité.\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true });
+        //     console.error(error);
+        // }
+        // return;
+
         // Récupère les plantations de l'utilisateur
         const userPlantations = user.plantations;
         // Récupère l'utilisateur
@@ -199,9 +210,16 @@ module.exports = {
                 );
 
             let userPlantations = user.plantations;
-            // Vérrouille les bouton fertiliser et anti-parasite si l'utilisateur n'a pas les outils
-            slotRow2.components[0].setDisabled(user.inventaire.outils.fertilisant <= 0 || user.inventaire.outils.fertilisant === undefined);
-            slotRow2.components[1].setDisabled(user.inventaire.outils.produit_antiparasite <= 0 || user.inventaire.outils.fertilisant === undefined);
+            try {
+                if (!user.inventaire) {
+                    return await buttonInteraction.reply({ content: `>>> Un problème est survenu. Erreur : plantation[215]`, ephemeral: true });
+                }
+                // Vérrouille les bouton fertiliser et anti-parasite si l'utilisateur n'a pas les outils
+                slotRow2.components[0].setDisabled(user.inventaire.outils.fertilisant <= 0 || user.inventaire.outils.fertilisant === undefined);
+                slotRow2.components[1].setDisabled(user.inventaire.outils.produit_antiparasite <= 0 || user.inventaire.outils.fertilisant === undefined);
+            } catch (error) {
+                console.error(error);
+            }
 
             // Cette condition s'assure de récupérer les plantations du joueurs lorsqu'il appuis sur le bouton de retour
             if (user.plantations[slot]) {
@@ -286,9 +304,9 @@ module.exports = {
                     if (userPlantations[slot].antiParasite) {
                         slotRow2.components[1].setDisabled(true);
                     }
-                    await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
-
+                    
                     try {
+                        await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                         // Enregistrer dans la base de donnée
                         await saveDb(interaction.user.id, user);
                     } catch (error) {
@@ -322,9 +340,8 @@ module.exports = {
                         slotRow2.components[0].setDisabled(true);
                     }
 
-                    await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
-
                     try {
+                        await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                         // Enregistrer dans la base de donnée
                         await saveDb(interaction.user.id, user);
                     } catch (error) {
@@ -354,7 +371,11 @@ module.exports = {
                     slotActiv = slot;
                     return;
                 } else {
-                    await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} a déjà une graine en maturation.`, ephemeral: true });
+                    try {
+                        await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} a déjà une graine en maturation.`, ephemeral: true });
+                    } catch (error) {
+                        console.error(error);
+                    }
                 return;
                 }
             }
@@ -364,19 +385,17 @@ module.exports = {
                 if (userInventory.outils.arrosoir <= 0 || userInventory.outils.arrosoir === undefined) {
                     return await buttonInteraction.reply({ content: `>>> Tu n'as pas d'arrosoir dans ton inventaire.\nPasse à la boutique pour t'en acheter un. \`/boutique\``, ephemeral: true });
                 }
-                // Arrose le slot
-                userPlantations[slot].niveau_arrosage += 1;
-
-                // Mettre à jour l'embed
-                slotEmbed.data.fields[3].value = `\`${userPlantations[slot].niveau_arrosage} fois\``;
-                await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
-
                 try {
+                    // Arrose le slot
+                    userPlantations[slot].niveau_arrosage += 1;
+                    // Mettre à jour l'embed
+                    slotEmbed.data.fields[3].value = `\`${userPlantations[slot].niveau_arrosage} fois\``;
+                    await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                     // Enregistrer dans la base de donnée
                     await saveDb(interaction.user.id, user);
                     return;
                 } catch (error) {
-                    await buttonInteraction.followUp({ content: `La sauvegarde a échoué.`, ephemeral: true });
+                    await buttonInteraction.followUp({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que des données importantes n'ont pas pu être récupérées...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true });
                     console.error(error);
                 }
                 return;

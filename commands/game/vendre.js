@@ -40,7 +40,7 @@ module.exports = {
         // Récupère l'utilisateur
         const user = await loadUser(interaction.user.id);
         if (!user) { return interaction.reply({ content: ">>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.", ephemeral: true}); }
-
+        if (!user.id) { return interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que ta sauvegarde soit défectueuse...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true}); }
         // Vérifier si le menu marchand est ouvert
         const userId = interaction.user.id;
 
@@ -231,7 +231,6 @@ module.exports = {
             }
         });
         collector.on('end', (message) => {
-            console.log('Fin de collecteur : vendre');
             interaction.followUp({ content: ">>> ⌛ **L'interface du marchand a expiré...**\n tape la commande \`/vendre\` pour y retourner. ", ephemeral: true }); 
             sellerOpen = false;
         });

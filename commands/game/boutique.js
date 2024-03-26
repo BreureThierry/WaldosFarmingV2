@@ -177,7 +177,6 @@ module.exports = {
         });
         // Gérer les interactions expirées
         collector.on('end', (message) => {
-            console.log('Fin de collecteur : boutique');
             shopOpen = false;
             messageShop.delete(message);
         });
