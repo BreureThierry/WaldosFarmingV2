@@ -14,6 +14,9 @@ const { saveDb,loadUser,capitalize,minutesToMs,formatMs,calculateHarvestAmount,u
 const config = require('../../config.json');
 const color = config.bot.botColor;
 // IMAGES
+const imgharvest0Araigne = './assets/img/araignee.jpg';
+const imgharvest0Limace = './assets/img/limace.jpg';
+const imgharvest0Chenille = './assets/img/chenille.jpg';
 const imgharvest0 = './assets/img/harvest0.png';
 const imgharvest1 = './assets/img/harvest1.png';
 const imgharvest2 = './assets/img/harvest2.png';
@@ -24,6 +27,7 @@ const imgplanting = './assets/img/planter.png';
 let menuOpen = false;
 let openedByUserId;
 
+// Login pour les envoi dans le channel public
 client.login(process.env.token);
 
 module.exports = {
@@ -436,6 +440,9 @@ module.exports = {
                 const tempsActuel = Date.now();
                 const tempsRestant = userSlot.readyTime - tempsActuel;
                 
+                const attackParasite = randomAward(0.4); // 60% de chances d'une invasion parasitaire
+                const dyingPlant = randomAward(0.6); // 40% de chances que la plante meurt
+                
                 // Si le temps restant est inférieur ou égal à 0 l'utilisateur peut récolter
                 if (tempsRestant <= 0) {
                     const niveauArrosage = userSlot.niveau_arrosage;
@@ -460,8 +467,6 @@ module.exports = {
                     if (userSlot.fertilized) { harvestLevel += 1; }
                     // Si le slot n'est pas traité contre les parasites
                     if (!userSlot.antiParasite) {
-                        const attackParasite = randomAward(0.7); // 70% de chances d'une invasion parasitaire
-                        const dyingPlant = randomAward(0.4); // 40% de chances que la plante meurt
                         if (attackParasite) {
                             const listParasites = ['chenilles','limaces','arraigné rouges'];
                             const typeParasite = randomSelection(listParasites);
@@ -470,18 +475,56 @@ module.exports = {
                                 // Mise à jour du rapport de récolte si la récolte n'a pas survécu à l'attaque parasitaire
                                 embedReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte et la plante est morte.`;
                                 publicReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte et la plante est morte.`;
-                                
+                                publicReponse.setDescription(`**Tu n'as pas la main verte !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** n'a rien récolté.`);
+                                if (typeParasite === 'chenilles') {
+                                    image0 = new AttachmentBuilder(imgharvest0Chenille);
+                                    publicReponse.setImage(`attachment://${fileUrl(imgharvest0Chenille)}`);
+                                }
+                                if (typeParasite === 'limaces') {
+                                    image0 = new AttachmentBuilder(imgharvest0Limace);
+                                    publicReponse.setImage(`attachment://${fileUrl(imgharvest0Limace)}`);
+                                }
+                                if (typeParasite === 'arraigné rouges') {
+                                    image0 = new AttachmentBuilder(imgharvest0Araigne);
+                                    publicReponse.setImage(`attachment://${fileUrl(imgharvest0Araigne)}`);
+                                }
                             } else {
                                 harvestLevel = 1;
                                 // Mise à jour du rapport de récolte si la récolte a survécu à l'attaque parasitaire
                                 embedReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte mais la plante a survécu.`;
                                 publicReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte mais la plante a survécu.`;
+                                publicReponse.setDescription(`**Tu fera mieux la prochaine fois !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)}.`);
+                                if (typeParasite === 'chenilles') {
+                                    image1 = new AttachmentBuilder(imgharvest0Chenille);
+                                    publicReponse.setImage(`attachment://${fileUrl(imgharvest0Chenille)}`);
+                                }
+                                if (typeParasite === 'limaces') {
+                                    image1 = new AttachmentBuilder(imgharvest0Limace);
+                                    publicReponse.setImage(`attachment://${fileUrl(imgharvest0Limace)}`);
+                                }
+                                if (typeParasite === 'arraigné rouges') {
+                                    image1 = new AttachmentBuilder(imgharvest0Araigne);
+                                    publicReponse.setImage(`attachment://${fileUrl(imgharvest0Araigne)}`);
+                                }
                             }                   
                         }
                     } else {
-                        const qualityDown = randomAward(0.5); // 50% de chances de perdre un niveau de récolte
+                        const qualityDown = randomAward(0.2); // 80% de chances de perdre un niveau de récolte
+                        console.log(`qualityDown : ${qualityDown}`);
                         if (qualityDown) {
                             harvestLevel -= 1;
+                        }
+                        if (harvestLevel === 0) {
+                            console.log(`Récolte de niveau 0 sans parasites`);
+                            image0 = new AttachmentBuilder(imgharvest0);
+                            publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`)
+                            .setDescription(`**Tu n'as pas la main verte !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** n'a rien récolté.`);
+                        }
+                        if (harvestLevel === 1) {
+                            console.log(`Récolte de niveau 1 sans parasites`);
+                            image1 = new AttachmentBuilder(imgharvest1);
+                            publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`)
+                            .setDescription(`**Tu fera mieux la prochaine fois !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)}.`);
                         }
                     }
                     // Mise à jour du rapport de récolte
@@ -495,7 +538,9 @@ module.exports = {
                         embedReponse.data.fields[0].value = `Surement un problème d'arrosage.`; 
                         publicReponse.data.fields[0].value = `Surement un problème d'arrosage.`; 
                     }
+
                     award = randomAward(0.5); // 1 chance sur 2
+
                     switch (harvestLevel) {
                         case 0:
                             // Vide le slot
@@ -518,13 +563,11 @@ module.exports = {
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
-                            const image0 = new AttachmentBuilder(imgharvest0);
+
                             embedReponse.setDescription(`**Tu n'as pas la main verte !**\nNiveau de la récolte : ${harvestLevel}\n \rTu n'as rien récolté.`);
                             // Message de réponse à l'utilisateur
                             await buttonInteraction.reply({ content: `Ta récolte est visible par les autres growers ici <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
-                            publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`)
-                            .setDescription(`**Tu n'as pas la main verte !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** n'a rien récolté.`);
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image0] , fetchReply: true });
                             
                             try {
@@ -566,13 +609,10 @@ module.exports = {
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
-                            const image1 = new AttachmentBuilder(imgharvest1);
                             embedReponse.setDescription(`**Tu fera mieux la prochaine fois !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 1 pied de ${capitalize(typeGraine)}.`);
                             // Message de réponse à l'utilisateur
                             await buttonInteraction.reply({ content: `Ta récolte est visible par les autres growers ici <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
-                            publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`)
-                            .setDescription(`**Tu fera mieux la prochaine fois !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)}.`);
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image1] , fetchReply: true });
 
                             try {
