@@ -14,7 +14,7 @@ for (const file of fs.readdirSync('./locale')) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('demarrer')
+        .setName('start')
         .setDescription('Set up your plantation and start the adventure. 🌱'),
     async execute(interaction) {
         const filePath = `./database/${interaction.user.id}.json`;

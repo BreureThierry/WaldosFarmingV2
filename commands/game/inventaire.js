@@ -12,7 +12,7 @@ for (const file of fs.readdirSync('./locale')) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('inventaire')
+        .setName('inventory')
         .setDescription("Displays a user's inventory")
         .addUserOption(option => option.setName('utilisateur').setDescription('The user whose inventory you wish to display.')),
     async execute(interaction) {
@@ -60,7 +60,20 @@ module.exports = {
         // Ajoute les outils à l'inventaire
         if (user.inventaire.outils) {
             fakeInventaire.outils = [];
-            for (const [outils, quantite] of Object.entries(user.inventaire.outils)) {
+            // Charger la base de données
+            const database = JSON.parse(fs.readFileSync("./database/database.json", 'utf8'));
+            // console.log(database.outils.arrosoir.name[user.lang]);
+            for (let [outils, quantite] of Object.entries(user.inventaire.outils)) {
+                // console.log(outils);
+                if (outils === 'arrosoir') {
+                    outils = database.objets.outils.arrosoir.name[user.lang];
+                }
+                if (outils === 'fertilisant') {
+                    outils = database.objets.outils.fertilisant.name[user.lang];
+                }
+                if (outils === 'produit_antiparasite') {
+                    outils = database.objets.outils.produit_antiparasite.name[user.lang];
+                }
             const outilsInfo = {
                 nom: outils,
                 quantite,

@@ -15,7 +15,7 @@ for (const file of fs.readdirSync('./locale')) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('classement')
+        .setName('ranking')
         .setDescription('Check out the leaderboard of the top 10 Growers around! 🏆'),
     async execute(interaction) {
         // Charger les données

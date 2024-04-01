@@ -29,7 +29,7 @@ client.login(process.env.token);
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('vendre')
+        .setName('sell')
         .setDescription('Sell your crops to a merchant.'),
     async execute(interaction) {
         const date = new Date().toLocaleString();

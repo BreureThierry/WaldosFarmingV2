@@ -16,7 +16,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('objet')
         .setDescription('Add or remove an item for the user')
-        .addUserOption((option) => option.setName('utilisateur').setDescription('The user').setRequired(true))
+        .addUserOption((option) => option.setName('utilisateur').setDescription('User').setRequired(true))
         .addStringOption((option) => option.setName('categorie').setDescription('The category of the item (graine, plante, outils)').setRequired(true))
         .addStringOption((option) => option.setName('objet').setDescription('The item (kush, arrosoir, fertilisant, produit_antiparasite)').setRequired(true))
         .addIntegerOption((option) => option.setName('quantite').setDescription('Quantity').setRequired(true))

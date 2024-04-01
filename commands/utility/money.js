@@ -14,9 +14,9 @@ for (const file of fs.readdirSync('./locale')) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('money')
-        .setDescription(`Ajoutez des ${devise} à un utilisateur.`)
-        .addUserOption(option => option.setName('utilisateur').setDescription('Utilisateur.').setRequired(true))
-        .addIntegerOption(option => option.setName('montant').setDescription('Montant.').setRequired(true))
+        .setDescription(`Add or remove ${devise} to a user.`)
+        .addUserOption(option => option.setName('utilisateur').setDescription('User').setRequired(true))
+        .addIntegerOption(option => option.setName('montant').setDescription('Amount').setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     async execute(interaction) {
 

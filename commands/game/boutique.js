@@ -17,7 +17,7 @@ let openedByUserId;
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('boutique')
+        .setName('shop')
         .setDescription('Welcome to the Let’s Grow! shop'),
     async execute(interaction) {
         // Charger la base de données
