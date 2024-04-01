@@ -1,32 +1,48 @@
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+// FONCTIONS
+const { loadUser } = require('../../fonctions.js');
+// CONFIG
 const config = require('../../config.json');
 const color = config.bot.botColor;
 const devise = config.bot.devise;
-
+const fs = require("fs");
+// LANG
+const locales = {};
+for (const file of fs.readdirSync('./locale')) {
+    locales[file.split('.')[0]] = require(`../../locale/${file}`);
+}
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('sos')
-        .setDescription('Affiche les commandes disponibles et leur fonction'),
+        .setDescription('Here is the list of available commands.'),
     async execute(interaction) {
+
+        // Récupère l'utilisateur
+        const user = await loadUser(interaction.user.id);
+
+        if (!user.lang) {
+            user.lang = config.bot.defaultLang;
+            console.log(`[sos] Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
+        }
 
         const sosEmbed = new EmbedBuilder()
             .setColor(color)
-            .setTitle('Besoin d\'aide ?')
-            // .setURL('https://discord.com/invite/waldoslegend')
-            .setAuthor({ name: 'Waldos Farming V2'})
-            .setDescription('*Voici la liste des commande disponible.*')
+            .setTitle(`${locales[user.lang].sosTitle}`)
+            .setAuthor({ name: 'Let\'s Grow! v2'})
+            .setDescription(`${locales[user.lang].sosDescription}`)
             .addFields(
-                { name: '`/sos`', value: `C'est la commande que tu consultes actuellement,\nelle liste toutes les commandes disponibles.` },
-                { name: '`/demarrer`', value: `Créer ta plantation Waldos et commence l'aventure.` },
-                { name: '`/plantation`', value: `Cette commande regroupe plusieurs actions.\nDans un premier temps elle affiche tes plantations puis te permet d'interagir sur tes différentes parcelles (*Slot 1, Slot 2, Slot 3, Slot 4*) grace aux boutons (*Planter, Arroser, Récolter, Fertiliser, etc...*).` },
-                { name: '`/inventaire`', value: `Consulte ton inventaire ou celui d'un autre grower.` },
-                { name: '`/vendre`', value: `Vend tes récoltes au marchand.` },
-                { name: '`/classement`', value: `Affiche le classement des 10 growers les plus riches.` },
-                { name: '`/boutique`', value: `Accéde à la boutique Waldos, tu pourras y acheter divers objets pour tes plantations (*Arrosoir, Graine, Fertilisant et Produit anti-parasite*).` },
+                { name: '`/sos`', value: `${locales[user.lang].sosCommandeSOS}` },
+                { name: '`/start`', value: `${locales[user.lang].sosCommandeStart}` },
+                { name: '`/language`', value: `${locales[user.lang].sosCommandeLanguage}` },
+                { name: '`/plantations`', value: `${locales[user.lang].sosCommandePlantations}` },
+                { name: '`/inventory`', value: `${locales[user.lang].sosCommandeInventory}` },
+                { name: '`/sell`', value: `${locales[user.lang].sosCommandeSell}` },
+                { name: '`/ranking`', value: `${locales[user.lang].sosCommandeRanking}` },
+                { name: '`/shop`', value: `${locales[user.lang].sosCommandeShop}` },
             )
             .addFields(
-                { name: '`/money`', value: `Cette commande est réservée aux **administrateurs**,\nelle permet de créditer/débiter un utilisateur en ${devise}.` },
-                { name: '`/objet`', value: `Cette commande est réservée aux **administrateurs**,\nelle permet d'ajouter/supprimer un objet à l'utilisateur.` },
+                { name: '`/money`', value: `${locales[user.lang].sosCommandeMoney} ${devise}.` },
+                { name: '`/objet`', value: `${locales[user.lang].sosCommandeObjet}` },
             )
         await interaction.reply({ content: `${interaction.user}`, embeds: [sosEmbed] });
     },

@@ -4,12 +4,17 @@ const fs = require("fs");
 const config = require('../../config.json');
 // FONCTIONS
 const { loadUser,capitalize } = require("../../fonctions.js");
+// LANG
+const locales = {};
+for (const file of fs.readdirSync('./locale')) {
+    locales[file.split('.')[0]] = require(`../../locale/${file}`);
+}
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('inventaire')
-        .setDescription('Affiche l\'inventaire d\'un utilisateur')
-        .addUserOption(option => option.setName('utilisateur').setDescription('L\'utilisateur dont vous voulez afficher l\'inventaire.')),
+        .setDescription("Displays a user's inventory")
+        .addUserOption(option => option.setName('utilisateur').setDescription('The user whose inventory you wish to display.')),
     async execute(interaction) {
         const userToCheck = interaction.options.getUser('utilisateur');
         const userId = userToCheck ? userToCheck.id : interaction.user.id;
@@ -17,8 +22,14 @@ module.exports = {
 
         // Récupère l'utilisateur
         const user = await loadUser(userId);
-        if (!user) { return interaction.reply({ content: ">>> L'utilisateur n'est pas enregistré.", ephemeral: true}); }
-        if (!user.id) { return interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que la sauvegarde soit défectueuse...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true}); }
+        if (!user) { return interaction.reply({ content: `>>> ${locales.en.inventoryUserNotFound}\n \r${locales.fr.inventoryUserNotFound}`, ephemeral: true}); }
+        if (!user.id) { return interaction.reply({ content: `>>> ${locales.en.inventoryErrorLoading}\n \r${locales.fr.inventoryErrorLoading}`, ephemeral: true}); }
+        
+        if (!user.lang) {
+            user.lang = config.bot.defaultLang;
+            console.log(`[inventaire] Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
+        }
+        
         const fakeInventaire = {}
 
         // Ajoute le montant d'argent à l'inventaire
@@ -61,29 +72,29 @@ module.exports = {
         // Construire le message d'embed pour afficher l'inventaire
         const embedInventory = new EmbedBuilder()
         .setColor(config.bot.botColor)
-        .setAuthor({ name: `Inventaire | ` + user.nomServeur })
-        .addFields({ name: `🪙 Argent :`, value: `\`${fakeInventaire.money} ${config.bot.devise}\`` })
+        .setAuthor({ name: `${locales[user.lang].inventoryTitle} ` + user.nomServeur })
+        .addFields({ name: `${locales[user.lang].inventoryMoney} `, value: `\`${fakeInventaire.money} ${config.bot.devise}\`` })
 
         // vérifie si l'utilisateur possède des graines
         if (fakeInventaire.graine === undefined || fakeInventaire.graine.length === 0) {
-            fakeInventaire.graine = "*`Vide`*";
-            embedInventory.addFields({ name: `🌱 Graines :`, value: `${fakeInventaire.graine}`});
+            fakeInventaire.graine = `${locales[user.lang].inventoryEmptyItem}`;
+            embedInventory.addFields({ name: `${locales[user.lang].inventorySeeds}`, value: `${fakeInventaire.graine}`});
         } else {
-            embedInventory.addFields({ name: `🌱 Graines :`, value: `${fakeInventaire.graine.map(graineInfo => `\`${capitalize(graineInfo.nom)} : ${graineInfo.quantite}\``).join('\n')}`});
+            embedInventory.addFields({ name: `${locales[user.lang].inventorySeeds}`, value: `${fakeInventaire.graine.map(graineInfo => `\`${capitalize(graineInfo.nom)} : ${graineInfo.quantite}\``).join('\n')}`});
         }
         // vérifie si l'utilisateur possède des plantes
         if (fakeInventaire.plante === undefined || fakeInventaire.plante.length === 0) {
-            fakeInventaire.plante = "*`Vide`*";
-            embedInventory.addFields({ name: `🌿 Plantes :`, value: `${fakeInventaire.plante}`});
+            fakeInventaire.plante = `${locales[user.lang].inventoryEmptyItem}`;
+            embedInventory.addFields({ name: `${locales[user.lang].inventoryPlants}`, value: `${fakeInventaire.plante}`});
         } else {
-            embedInventory.addFields({ name: `🌿 Plantes :`, value: `${fakeInventaire.plante.map(planteInfo => `\`${capitalize(planteInfo.nom)} : ${planteInfo.quantite}\``).join('\n')}`});
+            embedInventory.addFields({ name: `${locales[user.lang].inventoryPlants}`, value: `${fakeInventaire.plante.map(planteInfo => `\`${capitalize(planteInfo.nom)} : ${planteInfo.quantite}\``).join('\n')}`});
         }
         // vérifie si l'utilisateur possède des outils
         if (fakeInventaire.outils === undefined || fakeInventaire.outils.length === 0) {
-            fakeInventaire.outils = "*`Vide`*";
-            embedInventory.addFields({ name: `🛠️ Outils :`, value: `${fakeInventaire.outils}`});
+            fakeInventaire.outils = `${locales[user.lang].inventoryEmptyItem}`;
+            embedInventory.addFields({ name: `${locales[user.lang].inventoryTools}`, value: `${fakeInventaire.outils}`});
         } else {
-            embedInventory.addFields({ name: `🛠️ Outils :`, value: `${fakeInventaire.outils.map(outilsInfo => `\`${capitalize(outilsInfo.nom)} : ${outilsInfo.quantite}\``).join('\n')}`});
+            embedInventory.addFields({ name: `${locales[user.lang].inventoryTools}`, value: `${fakeInventaire.outils.map(outilsInfo => `\`${capitalize(outilsInfo.nom)} : ${outilsInfo.quantite}\``).join('\n')}`});
         }
         // Envoi le message d'inventaire
         await interaction.reply({ embeds: [embedInventory], ephemeral: true });

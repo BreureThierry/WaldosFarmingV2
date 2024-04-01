@@ -3,49 +3,111 @@
         "graine": {
             "kush": {
                 "prix": 3,
-                "description": "Graine de Kush, facile à cultiver.",
+                "description": {
+                    "en": "An easy to grow variety.",
+                    "fr": "Une variétée facile à cultiver."
+                },
                 "exigence": 0,
                 "temps": 5
             },
             "amnezia": {
                 "prix": 4,
-                "description": "Graine d'Amnezia, demande un peu d'entretient.",
+                "description": {
+                    "en": "A variety that requires some maintenance.",
+                    "fr": "Une variétée qui demande un peu d'entretient."
+                },
                 "exigence": 1,
                 "temps": 10
             },
             "purple": {
                 "prix": 5,
-                "description": "Graine de Purple, difficile à cultiver.",
+                "description": {
+                    "en": "A difficult to grow variety.",
+                    "fr": "Une variétée difficile à cultiver."
+                },
                 "exigence": 2,
                 "temps": 15
             }
         },
         "plante": {
             "kush": {
+                "prix": 6,
                 "valeur": 6,
-                "description": "Une variétée facile à cultiver."
+                "description": {
+                    "en": "An easy to grow variety.",
+                    "fr": "Une variétée facile à cultiver."
+                }
             },
             "amnezia": {
+                "prix": 8,
                 "valeur": 8,
-                "description": "Une variétée qui demande un peu d'entretient."
+                "description": {
+                    "en": "A variety that requires some maintenance.",
+                    "fr": "Une variétée qui demande un peu d'entretient."
+                }
             },
             "purple": {
+                "prix": 10,
                 "valeur": 10,
-                "description": "Une variétée difficile à cultiver."
+                "description": {
+                    "en": "A difficult to grow variety.",
+                    "fr": "Une variétée difficile à cultiver."
+                }
             }
         },
         "outils": {
             "arrosoir": {
                 "prix": 5,
-                "description": "Outil d'arrosage pour les plantes."
+                "name": {
+                    "en": "Watering can",
+                    "fr": "Arrosoir"
+                },
+                "description": {
+                    "en": "Watering tool for plants.",
+                    "fr": "Outil d'arrosage pour les plantes."
+                }
             },
             "fertilisant": {
                 "prix": 5,
-                "description": "Produit pour fertiliser le sol."
+                "name": {
+                    "en": "Fertilizer",
+                    "fr": "Fertilisant"
+                },
+                "description": {
+                    "en": "Product to fertilize the soil",
+                    "fr": "Produit pour fertiliser le sol."
+                }
             },
             "produit_antiparasite": {
                 "prix": 10,
-                "description": "Produit pour lutter contre les parasites."
+                "name": {
+                    "en": "Pesticide",
+                    "fr": "Produit anti-parasite"
+                },
+                "description": {
+                    "en": "Product to fight against parasites.",
+                    "fr": "Produit pour lutter contre les parasites."
+                }
+            }
+        },
+        "parasites": {
+            "1": {
+                "name": {
+                    "en": "caterpillars",
+                    "fr": "chenilles"
+                }
+            },
+            "2": {
+                "name": {
+                    "en": "slugs",
+                    "fr": "limaces"
+                }
+            },
+            "3": {
+                "name": {
+                    "en": "red spiders",
+                    "fr": "arraigné rouges"
+                }
             }
         }
     }

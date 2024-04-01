@@ -3,6 +3,7 @@
     "botId": "1189281736853569647",
     "botColor": "#940bc5",
     "devise": "$WL",
+    "defaultLang": "en",
     "farmingChannel": "1221140990002200588",
     "startMoney": 100,
     "devMode": false,

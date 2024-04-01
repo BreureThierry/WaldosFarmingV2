@@ -1,11 +1,12 @@
 const fs = require('fs').promises;
 
 class Grower {
-    constructor(id, nomServeur, nom, money) {
+    constructor(id, nomServeur, nom, money, lang) {
         this.id = id;
         this.nomServeur = nomServeur;
         this.nom = nom;
         this.xp = 0;
+        this.lang = lang;
         this.inventaire = {
             "money": money,
             "graine": {},
@@ -35,6 +36,10 @@ class Grower {
         } else {
             this.inventaire.money += amount;
         }
+    }
+
+    setLang(lang) {
+        this.lang = lang;
     }
 }
 module.exports = Grower;

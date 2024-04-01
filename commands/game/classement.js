@@ -7,11 +7,16 @@ const { loadUser } = require('../../fonctions.js');
 const config = require('../../config.json');
 const color = config.bot.botColor;
 const devise = config.bot.devise;
+// LANG
+const locales = {};
+for (const file of fs.readdirSync('./locale')) {
+    locales[file.split('.')[0]] = require(`../../locale/${file}`);
+}
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('classement')
-        .setDescription('Affiche le classement des 10 growers les plus riches'),
+        .setDescription('Check out the leaderboard of the top 10 Growers around! 🏆'),
     async execute(interaction) {
         // Charger les données
         const directoryPath = path.join(__dirname, '../../database');
@@ -20,9 +25,19 @@ module.exports = {
             // Lire les données
             fs.readdir(directoryPath, async (err, files) => {
                 if (err) {
-                    return console.log('Impossible de scanner le répertoire : ' + err);
+                    return console.log('[classement] Impossible de scanner le répertoire : ' + err);
                 } 
     
+                const userC = await loadUser(interaction.user.id);
+                if (!userC) { return await interaction.reply({ content: `>>> ${locales.en.shopNotGrower}`, ephemeral: true}); }
+
+                if (!userC.lang) {
+                    userC.lang = config.bot.defaultLang;
+                    console.log(`[classement] Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
+                    // Enregistrer dans la base de donnée
+                    await saveDb(interaction.user.id, userC);
+                }
+
                 const users = [];
                 let totalCirculationPoints = 0;
                 let totalPlayers = 0;
@@ -40,8 +55,6 @@ module.exports = {
                     }
                 }
                 
-                console.log(`${date} [/classement] par ${interaction.user.globalName} (${interaction.user.id})`);
-
                 // Trie le classement par ordre décroissant
                 users.sort((a, b) => b.money - a.money);
     
@@ -50,18 +63,18 @@ module.exports = {
                 // Construire le message d'embed pour afficher le classement
                 const embedClassement = new EmbedBuilder()
                     .setColor(color)
-                    .setAuthor({ name: 'Top 10 des utilisateurs les plus riches' })
+                    .setAuthor({ name: `${locales[userC.lang].leaderboardTitle}` })
                     .setDescription(`ㅤ\n${top10.join(' \n')}`)
-                    .setFooter({ text: `ㅤ\nTotal de joueurs : ${totalPlayers} ㅤㅤㅤㅤㅤㅤㅤㅤㅤ${devise} : ${totalCirculationPoints}`});
+                    .setFooter({ text: `ㅤ\n${locales[userC.lang].leaderboardTotalPlayers} ${totalPlayers} ㅤㅤㅤㅤㅤㅤㅤㅤㅤ${devise} : ${totalCirculationPoints}`});
     
                 // Envoyer le message d'embed
                 await interaction.reply({ content: `>>> ${interaction.user}`, embeds: [embedClassement] });
             });    
         } catch (error) {
             const date = new Date().toLocaleString();
-            console.log(`${date} [/classement] Erreur lors de l'affichage du classement.`);
+            console.log(`${date} [classement] Erreur lors de l'affichage du classement.`);
             // Envoyer le message d'embed
-            await interaction.reply({ content: `>>>🤯 Erreur lors de l'affichage du classement. !\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\`` });
+            await interaction.reply({ content: `>>> Erreur lors de l'affichage du classement. !\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\`` });
         }
     },
 };

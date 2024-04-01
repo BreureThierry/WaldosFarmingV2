@@ -1,6 +1,5 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const fs = require("fs");
-const Grower = require("../growerClass.js");
 // FONCTIONS
 const { saveDb,loadUser } = require('../fonctions.js');
 // CONFIG
@@ -8,6 +7,11 @@ const config = require('../config.json');
 const boutique  = require('../commands/game/boutique.js');
 const color = config.bot.botColor;
 const devise = config.bot.devise;
+// LANG
+const locales = {};
+for (const file of fs.readdirSync('./locale')) {
+    locales[file.split('.')[0]] = require(`../locale/${file}`);
+}
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -20,10 +24,10 @@ module.exports = {
 
         if (modal.customId === 'combien') {
             if (isNaN(amount)) {
-                return await interaction.reply({ content: `>>> La valeur saisie n'est pas correcte.\n`, ephemeral: true});
+                return await interaction.reply({ content: `>>> ${locales[user.lang].shopBadValue}\n`, ephemeral: true});
             }
             if (amount <= 0) {
-                return await interaction.reply({ content: `>>> La valeur saisie ne peut pas être un nombre négatif.\n`, ephemeral: true});
+                return await interaction.reply({ content: `>>> ${locales[user.lang].shopNegativeValue}\n`, ephemeral: true});
             }
 
             // Charger les données
@@ -33,9 +37,9 @@ module.exports = {
 
             // Charger les données de l'utilisateur
             const user = await loadUser(interaction.user.id);
-            if (!user) { return interaction.reply({ content: `>>> Tu n'es pas enregistré dans la base de données.\nCréé ta plantation avec la commande \`/demarrer\` et rejoins les growers.`, ephemeral: true}); }
+            if (!user) { return interaction.reply({ content: `>>> ${locales[user.lang].shopNotGrower}`, ephemeral: true}); }
             const date = new Date().toLocaleString();
-            if (!user.id) { return interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que ta sauvegarde soit défectueuse...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true}); }
+            if (!user.id) { return interaction.reply({ content: `>>> ${locales[user.lang].shopErrorLoading}`, ephemeral: true}); }
 
             // Vérifier si la categorie existe dans la base de données
             if (!database.objets.hasOwnProperty(_categorie)) { return; }
@@ -44,12 +48,11 @@ module.exports = {
             if (!database.objets[_categorie].hasOwnProperty(_objet)) { return; }
 
             const objet = database.objets[_categorie][_objet];
-            const moneyBefore = user.inventaire.money;
 
             // Vérifier si l'utilisateur possède suffisamment de "money" pour lui débiter le montant
             const prixTotal = objet.prix * _quantite;
             if (user.inventaire.money < prixTotal) {
-                embedMessage.setTitle(`🔴 Paiement refusé`).setDescription(`Tu n'as pas suffisamment d'argent pour payer.\n \r\`Montant total : ${prixTotal} ${devise}\``);
+                embedMessage.setTitle(`🔴 ${locales[user.lang].shopPaymentRefused}`).setDescription(`${locales[user.lang].shopPaymentRefusedDesc} \`${prixTotal} ${devise}\``);
                 return interaction.reply({ embeds: [embedMessage], fetchReply: true, ephemeral: true  });
             }
             // Débiter l'utilisateur
@@ -66,13 +69,13 @@ module.exports = {
             }
 
             try {
-                embedMessage.setTitle(`🟢 Paiement accepté`).setDescription(`\`Montant payé : ${prixTotal} ${devise}\`\n \r• ${nbArticles} ${choice}(s)\n \r*Merci de ta visite ${interaction.user.globalName},\nà bientôt.*`)
+                embedMessage.setTitle(`🟢 ${locales[user.lang].shopPaymentAccepted}`).setDescription(`\`${locales[user.lang].shopPaymentAcceptedDesc} ${prixTotal} ${devise}\`\n \r*${locales[user.lang].shopPaymentThanx}\n${locales[user.lang].shopPaymentSeeYouSoon}*`)
                 interaction.reply({ embeds: [embedMessage], fetchReply: true, ephemeral: true  });
                 // Enregistrer dans la base de donnée
                 await saveDb(interaction.user.id, user);
             } catch (error) {
                 console.error(error);
-                return interaction.reply({ content: `>>> Une erreur est survenu.`, ephemeral: true});
+                return interaction.reply({ content: `>>> ${locales[user.lang].shopPaymentError}`, ephemeral: true});
             }
         }
 	},

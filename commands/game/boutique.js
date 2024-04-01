@@ -5,25 +5,44 @@ const config = require('../../config.json');
 const color = config.bot.botColor;
 const devise = config.bot.devise;
 // FONCTIONS
-const { loadUser } = require('../../fonctions.js');
+const { loadUser, saveDb, capitalize } = require('../../fonctions.js');
+// LANG
+const locales = {};
+for (const file of fs.readdirSync('./locale')) {
+    locales[file.split('.')[0]] = require(`../../locale/${file}`);
+}
+// MENU
 let shopOpen = false;
 let openedByUserId;
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('boutique')
-        .setDescription('Affiche la boutique Waldos'),
+        .setDescription('Welcome to the Let’s Grow! shop'),
     async execute(interaction) {
         // Charger la base de données
         const date = new Date().toLocaleString();
         try {
             database = JSON.parse(fs.readFileSync("database/database.json", 'utf8'));
         } catch (error) {
-            interaction.reply({ content: `**Une erreur est survenue lors du chargement de la database.\n\r<@407824558918467586> | */p ${date}***`, ephemeral: true});
-            console.log(`${date} [/boutique] Erreur lors du chargement de la base de données.`);
+            interaction.reply({ content: `**${locales[user.lang].shopErrorDatabase}`, ephemeral: true});
+            console.log(`${date} [boutique] Erreur lors du chargement de la base de données.`);
             console.error(error);
             return;
         }
         
+        // Charger les données de l'utilisateur
+        const user = await loadUser(interaction.user.id);
+        if (!user) { return await interaction.reply({ content: `>>> ${locales.en.shopNotGrower}\n \r${locales.fr.shopNotGrower}`, ephemeral: true}); }   
+        
+        if (!user.lang) {
+            user.lang = config.bot.defaultLang;
+            console.log(`[boutique] Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
+            // Enregistrer dans la base de donnée
+            await saveDb(interaction.user.id, user);
+        }
+
+
         // Vérifier si la boutique est ouverte
         const userId = interaction.user.id;
 
@@ -33,32 +52,29 @@ module.exports = {
         }
 
         if (shopOpen && userId === openedByUserId) {
-            return interaction.reply({ content: ">>> L'interface de la boutique est déjà ouverte.", ephemeral: true });
-        } 
+            return interaction.reply({ content: `>>> ${locales[user.lang].shopAlreadyOpened}`, ephemeral: true });
+        }
         shopOpen = true;
         openedByUserId = userId;
 
-        // Charger les données de l'utilisateur
-        const user = await loadUser(interaction.user.id);
-        if (!user) { return await interaction.reply({ content: `>>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.`, ephemeral: true}); }
 
         // Créer le message de la boutique
         const embedBoutique = new EmbedBuilder()
         .setColor(color)
-        .setTitle(`Boutique`)
-        .setDescription(`Bienvenue dans la boutique Waldos Farming V2.\nJ\'ai tout ce dont tu as besoin pour tes plantations !`)
+        .setTitle(`${locales[user.lang].shopTitle}`)
+        .setDescription(`${locales[user.lang].shopDescription}`)
         .addFields(
-            { name: '\`Graines disponibles :\`', value: `\`3${devise}\` | Kush\n\`4${devise}\` | Amnezia\n\`5${devise}\` | Purple`, inline: true },
-            { name: '\`Outils disponibles :\`', value: `\`5${devise}\` | Arrosoir\n\`5${devise}\` | Fertilisant\n\`10${devise}\` | Produit anti-parasite`, inline: true },
-            { name: 'Infos :', value: '*Sélectionne la catégorie qui t\'intéresse et attend que le menu s\'actualise, ensuite choisi l\'objet que tu veux acheter et passe à la caisse.\n \rDans 2 minutes la boutique sera réinitialisée.*' },
+            { name: `${locales[user.lang].shopSeedsAvaible}`, value: `\`${database.objets.graine.kush.prix}${devise}\` | Kush\n\`${database.objets.graine.amnezia.prix}${devise}\` | Amnezia\n\`${database.objets.graine.purple.prix}${devise}\` | Purple`, inline: true },
+            { name: `${locales[user.lang].shopToolsAvaible}`, value: `\`${database.objets.outils.arrosoir.prix}${devise}\` | ${database.objets.outils.arrosoir.name[user.lang]}\n\`${database.objets.outils.fertilisant.prix}${devise}\` | ${database.objets.outils.fertilisant.name[user.lang]}\n\`${database.objets.outils.produit_antiparasite.prix}${devise}\` | ${database.objets.outils.produit_antiparasite.name[user.lang]}`, inline: true },
+            { name: `${locales[user.lang].shopInfos}`, value: `${locales[user.lang].shopInfosValue}` },
         );
         
         // Créer le menu de selection de la categorie
         const selectCategorie = new StringSelectMenuBuilder()
             .setCustomId('categorie_select')
-            .setPlaceholder('Sélectionne la categorie')
-            .addOptions({ label: 'Graines', value: 'graine', description: 'Les variétés de graines', emoji: '🌱'})
-            .addOptions({ label: 'Outils', value: 'outils', description: 'Les outils et produit', emoji: '🧰'});
+            .setPlaceholder(`${locales[user.lang].shopPickcategory}`)
+            .addOptions({ label: `${locales[user.lang].shopSeedCat}`, value: 'graine', description: `${locales[user.lang].shopSeedsType}`, emoji: '🌱'})
+            .addOptions({ label: `${locales[user.lang].shopToolCat}`, value: 'outils', description: `${locales[user.lang].shopToolsType}`, emoji: '🧰'});
 
         // Créer la rangée d'action du menu categorie
         const rowCategorie = new ActionRowBuilder().addComponents(selectCategorie);
@@ -69,15 +85,15 @@ module.exports = {
         // Créer le menu de selection de graine
         const selectGraines = new StringSelectMenuBuilder()
             .setCustomId('objet_select')
-            .setPlaceholder('Choisi une variété')         
+            .setPlaceholder(`${locales[user.lang].shopPickType}`)         
 
         for (const [key, value] of Object.entries(database.objets.graine)) {
-            const name = key;
+            const name = capitalize(key);
             const price = value.prix;
-            const description = value.description;
+            const description = value.description[user.lang];
             selectGraines.addOptions({ label: `${price} ${devise} | 🌱 ${name}`, description: `${description}`, value: key })
         }
-        selectGraines.addOptions({ label: 'Retour', value: 'retour', emoji: '🔙'});
+        selectGraines.addOptions({ label: `${locales[user.lang].shopBack}`, value: 'retour', emoji: '🔙'});
 
         // Créer la rangée d'action du menu de selection de graine
         const rowObjectGraines = new ActionRowBuilder().addComponents(selectGraines);
@@ -85,16 +101,16 @@ module.exports = {
         // Créer le menu de selection d'outils
         const selectOutils = new StringSelectMenuBuilder()
             .setCustomId('objet_select')
-            .setPlaceholder('Choisi l\'outils que tu veux acheter')
+            .setPlaceholder(`${locales[user.lang].shopPickTypeTool}`)
 
         for (const [key, value] of Object.entries(database.objets.outils)) {
-            const name = key;
+            const name = value.name[user.lang];
             const price = value.prix;
-            const description = value.description;
+            const description = value.description[user.lang];
 
             selectOutils.addOptions({ label: `${price} ${devise} | 🧰 ${name}`, description: `${description}`, value: key })
         }
-        selectOutils.addOptions({ label: 'Retour', value: 'retour', emoji: '🔙'});
+        selectOutils.addOptions({ label: `${locales[user.lang].shopBack}`, value: 'retour', emoji: '🔙'});
 
         // Créer la rangée d'action du menu de selection d'outils
         const rowObjectOutils = new ActionRowBuilder().addComponents(selectOutils);
@@ -111,10 +127,10 @@ module.exports = {
             const embedMessage = new EmbedBuilder().setColor(color)
 
             // Créer la modal du choix de la quantité de l'objet
-            const modal = new ModalBuilder().setCustomId('modalBoutique').setTitle('Boutique | Caisse');
+            const modal = new ModalBuilder().setCustomId('modalBoutique').setTitle(`${locales[user.lang].shopModalTitle}`);
 
             // Créer l'input de la quantité de l'objet
-            const amountChoiceInput = new TextInputBuilder().setCustomId('combien').setLabel("Combien ?").setMaxLength(1).setStyle(TextInputStyle.Short);
+            const amountChoiceInput = new TextInputBuilder().setCustomId('combien').setLabel(`${locales[user.lang].shopModalDescription}`).setMaxLength(1).setStyle(TextInputStyle.Short);
 
             // Créer la rangée d'action de la modal
             const amountChoiceActionRow = new ActionRowBuilder().addComponents(amountChoiceInput);
@@ -136,41 +152,35 @@ module.exports = {
 
                 // Gère les interactions de la selection d'une graine
                 case 'kush':
-                    amountChoiceInput.setPlaceholder(`Combien de graines de ${choice} tu veux acheter ?`)
                     await menuInteraction.showModal(modal);
                     _objet = choice;
                 break;
                 case 'amnezia':
-                    amountChoiceInput.setPlaceholder(`Combien de graines d'${choice} tu veux acheter ?`)
                     await menuInteraction.showModal(modal);
                     _objet = choice;
                 break;
                 case 'purple':
-                    amountChoiceInput.setPlaceholder(`Combien de graines de ${choice} tu veux acheter ?`)
                     await menuInteraction.showModal(modal);
                     _objet = choice;
                 break;
 
                 // Gère les interactions de la selection d'un outils
                 case 'arrosoir':
-                    amountChoiceInput.setPlaceholder(`Combien d'${choice}(s) tu veux acheter ?\n Un seul suffit.`)
                     await menuInteraction.showModal(modal);
                     _objet = choice;
                 break;
                 case 'fertilisant':
-                    amountChoiceInput.setPlaceholder(`Combien de ${choice} tu veux acheter ?`)
                     await menuInteraction.showModal(modal);
                     _objet = choice;
                 break;
                 case 'produit_antiparasite':
-                    amountChoiceInput.setPlaceholder(`Combien de Produits anti-parasites tu veux acheter ?`)
                     await menuInteraction.showModal(modal);
                     _objet = choice;
                 break;
                 
                 default:
-                    embedMessage.setTitle(`Quelque chose m'échappe...`)
-                    .setDescription(`Je n'ai pas cet article en stock.`)
+                    embedMessage.setTitle(`${locales[user.lang].shopErrorTitle}`)
+                    .setDescription(`${locales[user.lang].shopErrorDescription}`)
                     await menuInteraction.reply({ embeds: [embedMessage], fetchReply: true, ephemeral: true  });
                 break;
             }

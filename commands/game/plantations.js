@@ -23,7 +23,12 @@ const imgharvest2 = './assets/img/harvest2.png';
 const imgharvest3 = './assets/img/harvest3.png';
 const imgharvest4 = './assets/img/harvest4.png';
 const imgplanting = './assets/img/planter.png';
-
+// LANG
+const locales = {};
+for (const file of fs.readdirSync('./locale')) {
+    locales[file.split('.')[0]] = require(`../../locale/${file}`);
+}
+// MENU
 let menuOpen = false;
 let openedByUserId;
 
@@ -33,10 +38,20 @@ client.login(process.env.token);
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('plantations')
-        .setDescription('Affiche les plantations de l\'utilisateur'),
+        .setDescription("Displays the user's plantations"),
     async execute(interaction) {
         // Vérifier si la plantation est ouverte
         const userId = interaction.user.id;
+
+        // Récupère l'utilisateur
+        const user = await loadUser(interaction.user.id);
+        if (!user) { return interaction.reply({ content: `>>> ${locales.en.plantationNotGrower}\n \r${locales.fr.plantationNotGrower}`, ephemeral: true}); }
+        if (!user.id) { return interaction.reply({ content: `>>> ${locales.en.plantationErrorLoadingUser}\n \r${locales.fr.plantationErrorLoadingUser}`, ephemeral: true}); }
+        
+        if (!user.lang) {
+            user.lang = config.bot.defaultLang;
+            console.log(`[plantations] Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
+        }
 
         if (openedByUserId === undefined) {
             openedByUserId = userId;
@@ -44,7 +59,7 @@ module.exports = {
         }
 
         if (menuOpen && userId === openedByUserId) {
-            return interaction.reply({ content: ">>> L'interface est déjà ouverte.", ephemeral: true });
+            return interaction.reply({ content: `>>> ${locales[user.lang].plantationAlreadyOpened}`, ephemeral: true });
         } 
         menuOpen = true;
         openedByUserId = userId;
@@ -55,17 +70,12 @@ module.exports = {
         try {
             database = JSON.parse(fs.readFileSync("database/database.json", 'utf8'));
         } catch (error) {
-            interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que des données importantes n'ont pas pu être récupérées...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true});
-            console.log(`${date} [/plantations] Erreur lors du chargement de la base de données.`);
+            interaction.reply({ content: `>>> ${locales[user.lang].plantationErrorLoading}`, ephemeral: true});
+            console.log(`${date} [plantations] Erreur lors du chargement de la base de données.`);
             console.error(error);
             return;
         }
 
-        // Récupère l'utilisateur
-        const user = await loadUser(interaction.user.id);
-        if (!user) { return interaction.reply({ content: ">>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.", ephemeral: true}); }
-        if (!user.id) { return interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que ta sauvegarde soit défectueuse...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true}); }
-        
         // DEBUG EMPTY DATA
         // try {
         //     // Arrose le slot
@@ -90,8 +100,8 @@ module.exports = {
         // Créer le message d'embed principal
         const embed = new EmbedBuilder()
         .setColor(color)
-        .setTitle('Tes plantations')
-        .setDescription('Sélectionne une plantation pour effectuer une action.')
+        .setTitle(`${locales[user.lang].plantationTitle}`)
+        .setDescription(`${locales[user.lang].plantationDescription}`)
         
         // On boucle autant de fois qu'il y a de slots
         let nb = 0;
@@ -108,24 +118,24 @@ module.exports = {
 
             // On gère les plantations au cas où l'utilisateur n'en a pas
             if (userPlantations[slot].type === undefined) {
-                userType = "*`Vide`*";
+                userType = `${locales[user.lang].plantationEmpty}`;
                 userFertilized = " ";
                 userAntiParasite = " ";
                 userArrosage = " ";
                 userTimeleft = " ";
             } else {
-                userFertilized = userPlantations[slot].fertilized ? "`Fertilisation : ✅`" : "`Fertilisation : ❌`";
-                userAntiParasite = userPlantations[slot].antiParasite ? "`Anti-parasites : ✅`" : "`Anti-parasites : ❌`";
+                userFertilized = userPlantations[slot].fertilized ? `${locales[user.lang].plantationFertilized}` : `${locales[user.lang].plantationNotFertilized}`;
+                userAntiParasite = userPlantations[slot].antiParasite ? `${locales[user.lang].plantationPestTreatment}` : `${locales[user.lang].plantationNotPestTreatment}`;
 
                 const tempsActuel = Date.now();
                 const temps = formatMs(userPlantations[slot].readyTime - tempsActuel);
 
-                userType = `\`Variété : ${capitalize(userPlantations[slot].type)}\``;
+                userType = `\`${locales[user.lang].plantationVariety} ${capitalize(userPlantations[slot].type)}\``;
                 userPlantations[slot].niveau_arrosage = userPlantations[slot].niveau_arrosage || 0;
-                userArrosage = `\`Arrosage : ${userPlantations[slot].niveau_arrosage} fois\``;
-                userTimeleft = (temps.hours <= 0 && temps.minutes <= 0 && temps.seconds <= 0) ? `\`Statut : ✅ Prête\`` : `\`Statut : 🕒 ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
+                userArrosage = `\`${locales[user.lang].plantationWatering} ${userPlantations[slot].niveau_arrosage} ${locales[user.lang].plantationWateringTimes}\``;
+                userTimeleft = (temps.hours <= 0 && temps.minutes <= 0 && temps.seconds <= 0) ? `${locales[user.lang].plantationStatusOk}` : `\`${locales[user.lang].plantationStatusInProgress} ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
                 if (isNaN(temps.hours) || isNaN(temps.minutes) || isNaN(temps.seconds)) {
-                    userTimeleft = `\`Statut : 🕒 Non défini\``;
+                    userTimeleft = `${locales[user.lang].plantationStatusUndefined}`;
                 }
             }
             embed.addFields({ name: `🌿 Slot ${nb} :`, value: `${userType}\n${userFertilized}\n${userAntiParasite}\n${userArrosage}\n${userTimeleft}` })
@@ -162,31 +172,31 @@ module.exports = {
                 .addComponents(
                     new ButtonBuilder()
                         .setCustomId(`planter_${slot}`)
-                        .setLabel('Planter')
+                        .setLabel(`${locales[user.lang].plantationBtnPlanting}`)
                         .setDisabled(true)
                         .setStyle(ButtonStyle.Primary),
                     new ButtonBuilder()
                         .setCustomId(`arroser_${slot}`)
-                        .setLabel('Arroser')
+                        .setLabel(`${locales[user.lang].plantationBtnWatering}`)
                         .setStyle(ButtonStyle.Primary),
                     new ButtonBuilder()
                         .setCustomId(`recolter_${slot}`)
-                        .setLabel('Récolter')
+                        .setLabel(`${locales[user.lang].plantationBtnHarvest}`)
                         .setStyle(ButtonStyle.Primary),
                 );
             const slotRow2 = new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
                         .setCustomId(`fertiliser_${slot}`)
-                        .setLabel('Fertiliser')
+                        .setLabel(`${locales[user.lang].plantationBtnFertilize}`)
                         .setStyle(ButtonStyle.Success),
                     new ButtonBuilder()
                         .setCustomId(`antiparasite_${slot}`)
-                        .setLabel('Anti parasite')
+                        .setLabel(`${locales[user.lang].plantationBtnPestTreatment}`)
                         .setStyle(ButtonStyle.Success),
                     new ButtonBuilder()
                         .setCustomId(`retour`)
-                        .setLabel('Retour')
+                        .setLabel(`${locales[user.lang].plantationBtnBack}`)
                         .setStyle(ButtonStyle.Secondary)
                 );
             // Créer une rangée de boutons (choix de la graine à plantée)
@@ -206,14 +216,14 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary),
                     new ButtonBuilder()
                     .setCustomId(`retour`)
-                    .setLabel('Retour')
+                    .setLabel(`${locales[user.lang].plantationBtnBack}`)
                     .setStyle(ButtonStyle.Secondary)
                 );
 
             let userPlantations = user.plantations;
             try {
                 if (!user.inventaire) {
-                    return await buttonInteraction.reply({ content: `>>> Un problème est survenu. Erreur : plantation[215]`, ephemeral: true });
+                    return await buttonInteraction.reply({ content: `>>> ${locales[user.lang].plantationError}`, ephemeral: true });
                 }
                 // Vérrouille les bouton fertiliser et anti-parasite si l'utilisateur n'a pas les outils
                 slotRow2.components[0].setDisabled(user.inventaire.outils.fertilisant <= 0 || user.inventaire.outils.fertilisant === undefined);
@@ -226,7 +236,7 @@ module.exports = {
             if (user.plantations[slot]) {
                 // console.log(slot);
                 if (userPlantations[slot].type === undefined || userPlantations[slot].type === 'aucune') {
-                    userPlantations[slot].type = "aucune";
+                    userPlantations[slot].type = "aucune"; // VERIF ICI LORS DU CHANGEMENT DE LANGUE §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§$$$$$$$$$$$$$$$$$!!!!!
                     slotRow.components[0].setDisabled(false);
                 }
 
@@ -244,8 +254,8 @@ module.exports = {
                     slotRow2.components[1].setDisabled(true);  
                 }
 
-                let fert = userPlantations[slot].fertilized ? "`✅ Fertilisé`" : "`⭕ Non fertilisé`";
-                let antiP = userPlantations[slot].antiParasite ? "`✅ Traité`" : "`⭕ Non traité`";
+                let fert = userPlantations[slot].fertilized ? `${locales[user.lang].plantationSlotFertilized}` : `${locales[user.lang].plantationSlotNotFertilized}`;
+                let antiP = userPlantations[slot].antiParasite ? `${locales[user.lang].plantationSlotPestTreatment}` : `${locales[user.lang].plantationSlotNotPestTreatment}`;
 
                 // Gestion du systeme de temps 
                 const tempsActuel = Date.now();
@@ -253,7 +263,7 @@ module.exports = {
 
                 // Si le temps restant est négatif ou égal à 0, affiche "Prête à être récoltée" et déverrouille le bouton de récolte
                 if (tempsRestant <= 0) {
-                    statut = `✅ Prête à être récoltée`;
+                    statut = `${locales[user.lang].plantationSlotStatusReady}`;
                     slotRow.components[2].setDisabled(false);
                 } else {
                     // Verrouille le bouton de récolte
@@ -262,21 +272,21 @@ module.exports = {
                 // Formater le temps restant en heures, minutes et secondes
                 const temps = formatMs(tempsRestant);
 
-                statut = (temps.hours <= 0 && temps.minutes <= 0 && temps.seconds <= 0) ? `\`✅ Prête\`` : `\`🕒 ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
+                statut = (temps.hours <= 0 && temps.minutes <= 0 && temps.seconds <= 0) ? `${locales[user.lang].plantationSlotReady}` : `\`🕒 ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
                         if (isNaN(temps.hours) || isNaN(temps.minutes) || isNaN(temps.seconds)) {
-                            statut = `\`🕒 Non défini\``;
+                            statut = `${locales[user.lang].plantationSlotUndefined}`;
                         }
                 
                 // Actualise le slot
-                slotEmbed.setDescription(`Que souhaite tu faire ?`)
+                slotEmbed.setDescription(`${locales[user.lang].plantationSlotDescription}`)
                 .setColor(color)
-                .setTitle(`Plantation : ${capitalize(slot)}`)
+                .setTitle(`${locales[user.lang].plantationSlotTitle} ${capitalize(slot)}`)
                 .addFields(
-                    { name: `Variété :`, value: `\`${capitalize(userPlantations[slot].type)}\`` },
-                    { name: `Fertilisation :`, value: `\`${fert}\`` },
-                    { name: `Anti-parasites :`, value: `\`${antiP}\`` },
-                    { name: `Arrosage :`, value: `\`${userPlantations[slot].niveau_arrosage} fois\`` },
-                    { name: `Statut :`, value: `\`${statut}\`` }
+                    { name: `${locales[user.lang].plantationSlotStatusPlantation}`, value: `\`${capitalize(userPlantations[slot].type)}\`` },
+                    { name: `${locales[user.lang].plantationSlotFertilized0}`, value: `\`${fert}\`` },
+                    { name: `${locales[user.lang].plantationSlotPestTreatment0}`, value: `\`${antiP}\`` },
+                    { name: `${locales[user.lang].plantationSlotWatering}`, value: `\`${userPlantations[slot].niveau_arrosage} ${locales[user.lang].plantationWateringTimes}\`` },
+                    { name: `${locales[user.lang].plantationSlotStatus0}`, value: `\`${statut}\`` }
                 );
             }
 
@@ -285,11 +295,11 @@ module.exports = {
             if (buttonInteraction.customId === `fertiliser_${slot}`) {
                 // Vérifie si l'utilisateur possède du fertilisant
                 if (user.inventaire.outils.fertilisant <= 0 || user.inventaire.outils.fertilisant === undefined) {
-                    return await buttonInteraction.reply({ content: `>>> Tu n'as pas de fertilisant dans ton inventaire.\nPasse à la boutique pour en acheter. \`/boutique\``, ephemeral: true });
+                    return await buttonInteraction.reply({ content: `>>> ${locales[user.lang].plantationSlotFertilizedNotItem}`, ephemeral: true });
                 }
                 // Vérifie si le slot est déjà fertilisé
                 if (userPlantations[slot].fertilized) {
-                    return await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} est déjà fertilisé.`, ephemeral: true });
+                    return await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} ${locales[user.lang].plantationSlotAlreadyFertilized}`, ephemeral: true });
                 } else {
                     // Supprimer l'objet de l'inventaire de l'utilisateur
                     let userInventory = user.inventaire;
@@ -300,7 +310,7 @@ module.exports = {
                     // Vérrouiller le bouton
                     slotRow2.components[0].setDisabled(true);
                     // Mettre à jour l'embed
-                    slotEmbed.data.fields[1].value = "`✅ Fertilisé`";
+                    slotEmbed.data.fields[1].value = `${locales[user.lang].plantationSlotFertilized}`;
 
                     if (userPlantations[slot].antiParasite) {
                         slotRow2.components[1].setDisabled(true);
@@ -312,7 +322,7 @@ module.exports = {
                         await saveDb(interaction.user.id, user);
                     } catch (error) {
                         console.error(error);
-                        return await buttonInteraction.reply({ content: `>>> Un problème est survenu.`, ephemeral: true });
+                        return await buttonInteraction.reply({ content: `>>> ${locales[user.lang].plantationError1}`, ephemeral: true });
                     }
                 }
                 return;
@@ -320,11 +330,11 @@ module.exports = {
             if (buttonInteraction.customId === `antiparasite_${slot}`) {
                 // Vérifie si l'utilisateur possède du produit anti-parasite
                 if (user.inventaire.outils.produit_antiparasite <= 0 || user.inventaire.outils.produit_antiparasite === undefined) {
-                    return await buttonInteraction.reply({ content: `>>> Tu n'as pas de produit anti parasite dans ton inventaire.\nPasse à la boutique pour en acheter. \`/boutique\``, ephemeral: true });
+                    return await buttonInteraction.reply({ content: `>>> ${locales[user.lang].plantationSlotPestTreatmentNotItem}`, ephemeral: true });
                 }
                 // Vérifie si le slot est déjà traité
                 if (userPlantations[slot].antiParasite) {
-                    return await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} est déjà traité contre les parasites.`, ephemeral: true });
+                    return await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} ${locales[user.lang].plantationSlotAlreadyPestTreatment}`, ephemeral: true });
                 } else {
                     // Supprimer l'objet de l'inventaire de l'utilisateur
                     let userInventory = user.inventaire;
@@ -335,7 +345,7 @@ module.exports = {
                     // Vérrouiller le bouton
                     slotRow2.components[1].setDisabled(true);
                     // Mettre à jour l'embed
-                    slotEmbed.data.fields[2].value = "`✅ Traité`";
+                    slotEmbed.data.fields[2].value = `${locales[user.lang].plantationSlotPestTreatment}`;
                     
                     if (userPlantations[slot].fertilized) {
                         slotRow2.components[0].setDisabled(true);
@@ -347,7 +357,7 @@ module.exports = {
                         await saveDb(interaction.user.id, user);
                     } catch (error) {
                         console.error(error);
-                        return await buttonInteraction.reply({ content: `>>> Un problème est survenu.`, ephemeral: true });
+                        return await buttonInteraction.reply({ content: `>>> ${locales[user.lang].plantationError2}`, ephemeral: true });
                     }
                 }
                 return;
@@ -373,7 +383,7 @@ module.exports = {
                     return;
                 } else {
                     try {
-                        await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} a déjà une graine en maturation.`, ephemeral: true });
+                        await buttonInteraction.reply({ content: `>>> ${capitalize(slot)} ${locales[user.lang].plantationAlreadyPlanting}`, ephemeral: true });
                     } catch (error) {
                         console.error(error);
                     }
@@ -384,19 +394,19 @@ module.exports = {
                 let userInventory = user.inventaire;
                 // Vérifie si l'utilisateur possède un arrosoir
                 if (userInventory.outils.arrosoir <= 0 || userInventory.outils.arrosoir === undefined) {
-                    return await buttonInteraction.reply({ content: `>>> Tu n'as pas d'arrosoir dans ton inventaire.\nPasse à la boutique pour t'en acheter un. \`/boutique\``, ephemeral: true });
+                    return await buttonInteraction.reply({ content: `>>> ${locales[user.lang].plantationDontHaveWateringCan}`, ephemeral: true });
                 }
                 try {
                     // Arrose le slot
                     userPlantations[slot].niveau_arrosage += 1;
                     // Mettre à jour l'embed
-                    slotEmbed.data.fields[3].value = `\`${userPlantations[slot].niveau_arrosage} fois\``;
+                    slotEmbed.data.fields[3].value = `\`${userPlantations[slot].niveau_arrosage} ${locales[user.lang].plantationWateringTimes}\``;
                     await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                     // Enregistrer dans la base de donnée
                     await saveDb(interaction.user.id, user);
                     return;
                 } catch (error) {
-                    await buttonInteraction.followUp({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que des données importantes n'ont pas pu être récupérées...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true });
+                    await buttonInteraction.followUp({ content: `>>> ${locales[user.lang].plantationErrorLoading}`, ephemeral: true });
                     console.error(error);
                 }
                 return;
@@ -407,11 +417,11 @@ module.exports = {
                 slotActiv = slot;
                 // Vérifier si l'utilisateur existe dans la base de données
                 if (!user) {
-                    return await interaction.reply({ content: 'Tu n\'es pas enregistré dans la base de donnée.', ephemeral: true });
+                    return await interaction.reply({ content: `>>> ${locales[user.lang].plantationNotGrower}`, ephemeral: true });
                 }
                 // Vérifier si le slot est vide
                 if (!slot || Object.keys(slot).length === 0) {
-                    return await interaction.followUp({ content: 'Tu n\'as rien à récolter ici.', ephemeral: true });
+                    return await interaction.followUp({ content: `>>> ${locales[user.lang].plantationNothingToHarvest}`, ephemeral: true });
                 }
                 // Récupère l'utilisateur
                 const userId = user;
@@ -426,12 +436,12 @@ module.exports = {
 
                 // Vérifier si le type de graine existe dans la base de données
                 if (!database.objets.graine.hasOwnProperty(typeGraine)) {
-                    return await interaction.reply({ content: 'Cette variété n\'existe pas dans la base de donnée.', ephemeral: true });
+                    return await interaction.reply({ content: `>>> ${locales[user.lang].plantationVarietyDoesNotExist}`, ephemeral: true });
                 }              
                 
                 // Construction de l'embed de réponse
-                const embedReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``).addFields( { name: `Rapport de récolte :`, value: `Aucun problème.` } );
-                const publicReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``).addFields( { name: `Rapport de récolte :`, value: `Aucun problème.` } );
+                const embedReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``).addFields( { name: `${locales[user.lang].plantationHarvestreport}`, value: `${locales[user.lang].plantationHarvestreportNoIssues}` } );
+                const publicReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``).addFields( { name: `${locales[user.lang].plantationHarvestreport}`, value: `${locales[user.lang].plantationHarvestreportNoIssues}` } );
 
                 const exigenceGraine = database.objets.graine[typeGraine].exigence;
                 // console.log(`La graine ${typeGraine} a une niveau d'exigence de : ${exigenceGraine}`)
@@ -440,7 +450,7 @@ module.exports = {
                 const tempsActuel = Date.now();
                 const tempsRestant = userSlot.readyTime - tempsActuel;
                 
-                const attackParasite = randomAward(0.4); // 60% de chances d'une invasion parasitaire
+                const attackParasite = randomAward(0.3); // 70% de chances d'une invasion parasitaire
                 const dyingPlant = randomAward(0.6); // 40% de chances que la plante meurt
                 
                 // Si le temps restant est inférieur ou égal à 0 l'utilisateur peut récolter
@@ -467,76 +477,82 @@ module.exports = {
                     if (userSlot.fertilized) { harvestLevel += 1; }
                     // Si le slot n'est pas traité contre les parasites
                     if (!userSlot.antiParasite) {
-                        if (attackParasite) {
-                            const listParasites = ['chenilles','limaces','arraigné rouges'];
+                        if (attackParasite) {                            
+                            const listParasites = [database.objets.parasites[1].name[user.lang],database.objets.parasites[2].name[user.lang],database.objets.parasites[3].name[user.lang]];
                             const typeParasite = randomSelection(listParasites);
                             if (dyingPlant) {
                                 harvestLevel = 0;
                                 // Mise à jour du rapport de récolte si la récolte n'a pas survécu à l'attaque parasitaire
-                                embedReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte et la plante est morte.`;
-                                publicReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte et la plante est morte.`;
-                                publicReponse.setDescription(`**Tu n'as pas la main verte !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** n'a rien récolté.`);
-                                if (typeParasite === 'chenilles') {
+                                embedReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestreportSome} ${typeParasite} ${locales[user.lang].plantationHarvestreportPlantDie}`;
+                                publicReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestreportSome} ${typeParasite} ${locales[user.lang].plantationHarvestreportPlantDie}`;
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestUserCollectedNothingPublic}`);
+                                if (typeParasite === database.objets.parasites[1].name[user.lang]) {
                                     image0 = new AttachmentBuilder(imgharvest0Chenille);
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Chenille)}`);
                                 }
-                                if (typeParasite === 'limaces') {
+                                if (typeParasite === database.objets.parasites[2].name[user.lang]) {
                                     image0 = new AttachmentBuilder(imgharvest0Limace);
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Limace)}`);
                                 }
-                                if (typeParasite === 'arraigné rouges') {
+                                if (typeParasite === database.objets.parasites[3].name[user.lang]) {
                                     image0 = new AttachmentBuilder(imgharvest0Araigne);
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Araigne)}`);
                                 }
                             } else {
                                 harvestLevel = 1;
                                 // Mise à jour du rapport de récolte si la récolte a survécu à l'attaque parasitaire
-                                embedReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte mais la plante a survécu.`;
-                                publicReponse.data.fields[0].value = `Des ${typeParasite} on envahit la récolte mais la plante a survécu.`;
-                                publicReponse.setDescription(`**Tu fera mieux la prochaine fois !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)}.`);
-                                if (typeParasite === 'chenilles') {
+                                embedReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestreportSome} ${typeParasite} ${locales[user.lang].plantationHarvestreportPlantSurvive}`;
+                                publicReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestreportSome} ${typeParasite} ${locales[user.lang].plantationHarvestreportPlantSurvive}`;
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote1}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)}.`);
+                                if (typeParasite === database.objets.parasites[1].name[user.lang]) {
                                     image1 = new AttachmentBuilder(imgharvest0Chenille);
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Chenille)}`);
                                 }
-                                if (typeParasite === 'limaces') {
+                                if (typeParasite === database.objets.parasites[2].name[user.lang]) {
                                     image1 = new AttachmentBuilder(imgharvest0Limace);
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Limace)}`);
                                 }
-                                if (typeParasite === 'arraigné rouges') {
+                                if (typeParasite === database.objets.parasites[3].name[user.lang]) {
                                     image1 = new AttachmentBuilder(imgharvest0Araigne);
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Araigne)}`);
                                 }
                             }                   
                         }
                     } else {
-                        const qualityDown = randomAward(0.2); // 80% de chances de perdre un niveau de récolte
-                        console.log(`qualityDown : ${qualityDown}`);
+                        const qualityDown = randomAward(0.1); // 90% de chances de perdre un niveau de récolte
                         if (qualityDown) {
                             harvestLevel -= 1;
                         }
-                        if (harvestLevel === 0) {
-                            console.log(`Récolte de niveau 0 sans parasites`);
+                        if (harvestLevel <= 0) {
+                            harvestLevel = 0;
                             image0 = new AttachmentBuilder(imgharvest0);
                             publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`)
-                            .setDescription(`**Tu n'as pas la main verte !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** n'a rien récolté.`);
+                            .setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestUserCollectedNothingPublic}`);
                         }
                         if (harvestLevel === 1) {
-                            console.log(`Récolte de niveau 1 sans parasites`);
                             image1 = new AttachmentBuilder(imgharvest1);
                             publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`)
-                            .setDescription(`**Tu fera mieux la prochaine fois !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)}.`);
+                            .setDescription(`**${locales[user.lang].plantationHarvestLevelNote1}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)}.`);
                         }
                     }
+
+                    // Sécurité pour éviter un niveau de récolte négatif
+                    if (harvestLevel <= 0) {
+                        harvestLevel = 0;
+                    }
+
                     // Mise à jour du rapport de récolte
                     if (niveauArrosage === 0) { 
                         harvestLevel = 0;
-                        embedReponse.data.fields[0].value = `Problème d'arrosage.`; 
-                        publicReponse.data.fields[0].value = `Problème d'arrosage.`; 
+                        embedReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem}`; 
+                        publicReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem}`; 
                         
                     }
                     if (niveauArrosage > 7) {
-                        embedReponse.data.fields[0].value = `Surement un problème d'arrosage.`; 
-                        publicReponse.data.fields[0].value = `Surement un problème d'arrosage.`; 
+                        embedReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem1}`; 
+                        publicReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem1}`; 
+                        image1 = new AttachmentBuilder(imgharvest1);
+                        publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`);
                     }
 
                     award = randomAward(0.5); // 1 chance sur 2
@@ -555,18 +571,18 @@ module.exports = {
                             slotRow.components[0].setDisabled(true);
 
                             // RESET DE L'EMBED SLOT
-                            slotEmbed.data.fields[0].value = "`Aucune`";
-                            slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
-                            slotEmbed.data.fields[2].value = "`⭕ Non traité`";
-                            slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
+                            slotEmbed.data.fields[0].value = `${locales[user.lang].plantationRefreshVariety}`;
+                            slotEmbed.data.fields[1].value = `${locales[user.lang].plantationRefreshFertilization}`;
+                            slotEmbed.data.fields[2].value = `${locales[user.lang].plantationRefreshPestTreatment}`;
+                            slotEmbed.data.fields[3].value = `\`0 ${locales[user.lang].plantationWateringTimes}\``;
+                            slotEmbed.data.fields[4].value = `${locales[user.lang].plantationSlotUndefined}`;
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
 
-                            embedReponse.setDescription(`**Tu n'as pas la main verte !**\nNiveau de la récolte : ${harvestLevel}\n \rTu n'as rien récolté.`);
+                            embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestUserCollectedNothing}`);
                             // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `Ta récolte est visible par les autres growers ici <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image0] , fetchReply: true });
                             
@@ -582,7 +598,7 @@ module.exports = {
                                 await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                                 return;
                             } catch (error) {
-                                await buttonInteraction.followUp({ content: `La sauvegarde a échoué.`, ephemeral: true });
+                                await buttonInteraction.followUp({ content: `${locales[user.lang].plantationError3}`, ephemeral: true });
                                 console.error(error);
                             }
                         break;
@@ -601,17 +617,17 @@ module.exports = {
                             // await interaction.editReply({ components: [slotRow, slotRow2] });
 
                             // RESET DE L'EMBED SLOT
-                            slotEmbed.data.fields[0].value = "`Aucune`";
-                            slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
-                            slotEmbed.data.fields[2].value = "`⭕ Non traité`";
-                            slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
+                            slotEmbed.data.fields[0].value = `${locales[user.lang].plantationRefreshVariety}`;
+                            slotEmbed.data.fields[1].value = `${locales[user.lang].plantationRefreshFertilization}`;
+                            slotEmbed.data.fields[2].value = `${locales[user.lang].plantationRefreshPestTreatment}`;
+                            slotEmbed.data.fields[3].value = `\`0 ${locales[user.lang].plantationWateringTimes}\``;
+                            slotEmbed.data.fields[4].value = `${locales[user.lang].plantationSlotUndefined}`;
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
-                            embedReponse.setDescription(`**Tu fera mieux la prochaine fois !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 1 pied de ${capitalize(typeGraine)}.`);
+                            embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote1}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel1} ${capitalize(typeGraine)}.`);
                             // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `Ta récolte est visible par les autres growers ici <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image1] , fetchReply: true });
 
@@ -627,7 +643,7 @@ module.exports = {
                                 await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                                 return;
                             } catch (error) {
-                                await buttonInteraction.followUp({ content: `La sauvegarde a échoué.`, ephemeral: true });
+                                await buttonInteraction.followUp({ content: `${locales[user.lang].plantationError3}`, ephemeral: true });
                                 console.error(error);
                             }
                         break
@@ -639,11 +655,11 @@ module.exports = {
                             // Attribution des bonus / 1 graine du même type pour une récolte de niveau 2 (1 chance sur 2)
                             if (award) {
                                 userInventory = updateUserInventory(userInventory, 'graine', typeGraine, 1);
-                                embedReponse.setDescription(`**C'est pas mal !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 1 pied de ${capitalize(typeGraine)} et tu as récupéré 1 graine.`);
-                                publicReponse.setDescription(`**C'est pas mal !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)} et 1 graine.`);
+                                embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote2}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel1} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel3Public}`);
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote2}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel3Public}`);
                             } else {
-                                embedReponse.setDescription(`**C'est pas mal !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 1 pied de ${capitalize(typeGraine)}.`);
-                                publicReponse.setDescription(`**C'est pas mal !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)}.`);
+                                embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote2}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel1} ${capitalize(typeGraine)}.`);
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote2}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)}.`);
                             }
 
                             // Verrouille les boutons
@@ -656,17 +672,17 @@ module.exports = {
                             // await interaction.editReply({ components: [slotRow, slotRow2] });
 
                             // RESET DE L'EMBED SLOT
-                            slotEmbed.data.fields[0].value = "`Aucune`";
-                            slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
-                            slotEmbed.data.fields[2].value = "`⭕ Non traité`";
-                            slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
+                            slotEmbed.data.fields[0].value = `${locales[user.lang].plantationRefreshVariety}`;
+                            slotEmbed.data.fields[1].value = `${locales[user.lang].plantationRefreshFertilization}`;
+                            slotEmbed.data.fields[2].value = `${locales[user.lang].plantationRefreshPestTreatment}`;
+                            slotEmbed.data.fields[3].value = `\`0 ${locales[user.lang].plantationWateringTimes}\``;
+                            slotEmbed.data.fields[4].value = `${locales[user.lang].plantationSlotUndefined}`;
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
                             const image2 = new AttachmentBuilder(imgharvest2);
                             // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `Ta récolte est visible par les autres growers ici <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
                             publicReponse.setImage(`attachment://${fileUrl(imgharvest2)}`)
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image2] , fetchReply: true });
@@ -683,7 +699,7 @@ module.exports = {
                                 await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                                 return;
                             } catch (error) {
-                                await buttonInteraction.followUp({ content: `La sauvegarde a échoué.`, ephemeral: true });
+                                await buttonInteraction.followUp({ content: `${locales[user.lang].plantationError3}`, ephemeral: true });
                                 console.error(error);
                             }
                         break
@@ -695,12 +711,12 @@ module.exports = {
                             // Attribution des bonus / Gain de 1 ou 2 graine du même type pour une récolte de niveau 3 
                             if (award) {
                                 userInventory = updateUserInventory(userInventory, 'graine', typeGraine, 2);
-                                embedReponse.setDescription(`**Belle récolte !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 1 pied de ${capitalize(typeGraine)} et tu as récupéré 2 graines.`);
-                                publicReponse.setDescription(`**Belle récolte !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)} et 2 graines.`);
+                                embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote3}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel1} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel4Public}`);
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote3}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel4Public}`);
                             } else {
                                 userInventory = updateUserInventory(userInventory, 'graine', typeGraine, 1);
-                                embedReponse.setDescription(`**Belle récolte !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 1 pied de ${capitalize(typeGraine)} et tu as récupéré 1 graine.`);
-                                publicReponse.setDescription(`**Belle récolte !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)} et 1 graine.`);
+                                embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote3}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel1} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel3Public}`);
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote3}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel3Public}`);
                             }
 
                             // Verrouille les boutons
@@ -713,18 +729,18 @@ module.exports = {
                             // await interaction.editReply({ components: [slotRow, slotRow2] });
 
                             // RESET DE L'EMBED SLOT
-                            slotEmbed.data.fields[0].value = "`Aucune`";
-                            slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
-                            slotEmbed.data.fields[2].value = "`⭕ Non traité`";
-                            slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
+                            slotEmbed.data.fields[0].value = `${locales[user.lang].plantationRefreshVariety}`;
+                            slotEmbed.data.fields[1].value = `${locales[user.lang].plantationRefreshFertilization}`;
+                            slotEmbed.data.fields[2].value = `${locales[user.lang].plantationRefreshPestTreatment}`;
+                            slotEmbed.data.fields[3].value = `\`0 ${locales[user.lang].plantationWateringTimes}\``;
+                            slotEmbed.data.fields[4].value = `${locales[user.lang].plantationSlotUndefined}`;
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
                             const image3 = new AttachmentBuilder(imgharvest3);
                             embedReponse.setImage(`attachment://${fileUrl(imgharvest3)}`);
                             // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `Ta récolte est visible par les autres growers ici <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
                             publicReponse.setImage(`attachment://${fileUrl(imgharvest3)}`)
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image3] , fetchReply: true });
@@ -741,7 +757,7 @@ module.exports = {
                                 await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                                 return;
                             } catch (error) {
-                                await buttonInteraction.followUp({ content: `La sauvegarde a échoué.`, ephemeral: true });
+                                await buttonInteraction.followUp({ content: `${locales[user.lang].plantationError3}`, ephemeral: true });
                                 console.error(error);
                             }
                         break
@@ -750,19 +766,16 @@ module.exports = {
                             userId.plantations[slot] = {};
 
                             // Attribution des bonus //
-                            // Double récolte OU 2 graines d'un type aléatoire
-                            const awardArray = ['kush', 'amnezia', 'purple'];
-                            const randomSelect = randomSelection(awardArray);
 
                             if (award) {
                                 userInventory = updateUserInventory(userInventory, 'plante', typeGraine, 2);
-                                embedReponse.setDescription(`**Récolte incroyable !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 2 pieds de ${capitalize(typeGraine)}.`);
-                                publicReponse.setDescription(`**Récolte incroyable !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 2 pieds de ${capitalize(typeGraine)}.`);
+                                embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote4}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel2} ${capitalize(typeGraine)}.`);
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote4}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel2Public} ${capitalize(typeGraine)}.`);
                             } else {
                                 userInventory = updateUserInventory(userInventory, 'plante', typeGraine, 1);
-                                userInventory = updateUserInventory(userInventory, 'graine', randomSelect, 2);
-                                embedReponse.setDescription(`**Récolte incroyable !**\nNiveau de la récolte : ${harvestLevel}\n \rTu as récolté 1 pied de ${capitalize(typeGraine)} et tu a récupéré 2 graines de ${capitalize(randomSelect)}.`);
-                                publicReponse.setDescription(`**Récolte incroyable !**\nNiveau de la récolte : ${harvestLevel}\n \r**${user.nomServeur}** a récolté 1 pied de ${capitalize(typeGraine)} et 2 graines de ${capitalize(randomSelect)}.`);
+                                userInventory = updateUserInventory(userInventory, 'graine', typeGraine, 4);
+                                embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote4}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel1} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel5Public}`);
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote4}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)} ${locales[user.lang].plantationHarvestLevel5Public}`);
                             }
 
                             // Verrouille les boutons
@@ -775,18 +788,18 @@ module.exports = {
                             // await interaction.editReply({ components: [slotRow, slotRow2] });
 
                             // RESET DE L'EMBED SLOT
-                            slotEmbed.data.fields[0].value = "`Aucune`";
-                            slotEmbed.data.fields[1].value = "`⭕ Non fertilisé`";
-                            slotEmbed.data.fields[2].value = "`⭕ Non traité`";
-                            slotEmbed.data.fields[3].value = "`0 fois`";
-                            slotEmbed.data.fields[4].value = "`🕒 Non défini`";
+                            slotEmbed.data.fields[0].value = `${locales[user.lang].plantationRefreshVariety}`;
+                            slotEmbed.data.fields[1].value = `${locales[user.lang].plantationRefreshFertilization}`;
+                            slotEmbed.data.fields[2].value = `${locales[user.lang].plantationRefreshPestTreatment}`;
+                            slotEmbed.data.fields[3].value = `\`0 ${locales[user.lang].plantationWateringTimes}\``;
+                            slotEmbed.data.fields[4].value = `${locales[user.lang].plantationSlotUndefined}`;
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
                             const image4 = new AttachmentBuilder(imgharvest4);
                             embedReponse.setImage(`attachment://${fileUrl(imgharvest4)}`);
                             // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `Ta récolte est visible par les autres growers ici <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
                             publicReponse.setImage(`attachment://${fileUrl(imgharvest4)}`)
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image4] , fetchReply: true });
@@ -803,13 +816,13 @@ module.exports = {
                                 await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
                                 return;
                             } catch (error) {
-                                await buttonInteraction.followUp({ content: `La sauvegarde a échoué.`, ephemeral: true });
+                                await buttonInteraction.followUp({ content: `${locales[user.lang].plantationError3}`, ephemeral: true });
                                 console.error(error);
                             }
                         break
                     }
                 } else {
-                    return await interaction.reply({ content: '>>> Tu ne peux pas récolter pour le moment !', ephemeral: true });
+                    return await interaction.reply({ content: `>>> ${locales[user.lang].plantationCantHarvest}`, ephemeral: true });
                 }
             }
             // Boucle chaque variété de graine dispo
@@ -826,14 +839,14 @@ module.exports = {
 
                 // Vérifier si le slot est déjà en maturation
                 if (typesGrainesMaturation.includes(userPlantations[slotActiv || slot].type)) {
-                    await buttonInteraction.reply({ content: `>>> ${capitalize(slotActiv)} a déjà une graine en maturation.`, ephemeral: true });
+                    await buttonInteraction.reply({ content: `>>> ${capitalize(slotActiv)} ${locales[user.lang].plantationAlreadySeedMaturation}`, ephemeral: true });
                     return;
                 }
 
                 // Vérifier si l'utilisateur possède au moins une graine
                 let userInventory = user.inventaire;
                 if (userInventory.graine[variete] <= 0 || userInventory.graine[variete] === undefined) {
-                    await buttonInteraction.reply({ content: `>>> Tu n'as aucune graine de ${capitalize(variete)} dans ton inventaire.`, ephemeral: true });
+                    await buttonInteraction.reply({ content: `>>> ${capitalize(slotActiv)} ${locales[user.lang].plantationHaveNotSeed}`, ephemeral: true });
                     return;
                 }
 
@@ -853,34 +866,34 @@ module.exports = {
                 const tempsActuel = Date.now();
                 const temps = formatMs(userPlantations[slotActiv || slot].readyTime - tempsActuel);
                 if (temps.hours <= 0 && temps.minutes <= 0 && temps.seconds <= 0) {
-                    statut = `\`Statut : ✅\``;
+                    statut = `${locales[user.lang].plantationStatusOk1}`;
                 } else {
-                    statut = `\`Statut : 🕒 ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
+                    statut = `\`${locales[user.lang].plantationStatusInProgress} ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
                     if (isNaN(temps.hours) && isNaN(temps.minutes) && isNaN(temps.seconds)) {
-                        statut = `🕒 Non défini`;
+                        statut = `${locales[user.lang].plantationSlotUndefined}`;
                     }
                 }
                 let fert,antiP;
                 if (userPlantations[slotActiv || slot].fertilized) {
-                    fert = "`✅ Fertilisé`";
+                    fert = `${locales[user.lang].plantationSlotFertilized}`;
                 } else {
-                    fert = "`⭕ Non fertilisé`";
+                    fert = `${locales[user.lang].plantationRefreshFertilization}`;
                 }
                 if (userPlantations[slotActiv || slot].antiParasite) {
-                    antiP = "`✅ Traité`";
+                    antiP = `${locales[user.lang].plantationSlotPestTreatment}`;
                 } else {
-                    antiP = "`⭕ Non traité`";
+                    antiP = `${locales[user.lang].plantationRefreshPestTreatment}`;
                 }
                 // Mettre à jour l'embed
-                slotEmbed.setDescription(`Que souhaite tu faire ?`)
+                slotEmbed.setDescription(`${locales[user.lang].plantationSlotDescription}`)
                 .setColor(color)
-                .setTitle(`Plantation : ${capitalize(slotActiv || slot)}`)
+                .setTitle(`${locales[user.lang].plantationSlotTitle} ${capitalize(slotActiv || slot)}`)
                 .addFields(
-                    { name: `Variété :`, value: `\`${capitalize(userPlantations[slotActiv || slot].type)}\`` },
-                    { name: `Fertilisation :`, value: `\`${fert}\`` },
-                    { name: `Anti-parasites :`, value: `\`${antiP}\`` },
-                    { name: `Arrosage :`, value: `\`${userPlantations[slotActiv || slot].niveau_arrosage || 0} fois\`` },
-                    { name: `Statut :`, value: `\`${statut}\`` }
+                    { name: `${locales[user.lang].plantationVariety}`, value: `\`${capitalize(userPlantations[slotActiv || slot].type)}\`` },
+                    { name: `${locales[user.lang].plantationSlotFertilized0}`, value: `\`${fert}\`` },
+                    { name: `${locales[user.lang].plantationSlotPestTreatment0}`, value: `\`${antiP}\`` },
+                    { name: `${locales[user.lang].plantationSlotWatering}`, value: `\`${userPlantations[slotActiv || slot].niveau_arrosage || 0} ${locales[user.lang].plantationWateringTimes}\`` },
+                    { name: `${locales[user.lang].plantationSlotStatus0}`, value: `\`${statut}\`` }
                 );
                 await buttonInteraction.update({ embeds: [slotEmbed], components: [plantingRow] });
 
@@ -898,7 +911,7 @@ module.exports = {
                 .setColor(color)
                 .setTitle(`\`${capitalize(slotActiv || slot)}\``)
                 .setImage(`attachment://${fileUrl(imgplanting)}`)
-                .setDescription(`**${user.nomServeur}** à planté une graine de **${capitalize(variete)}** dans sa plantation.`);
+                .setDescription(`**${user.nomServeur}** ${locales[user.lang].plantationUserPlanted} **${capitalize(variete)}**`);
                 await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [imagePlanting] , fetchReply: true });
 
                 try {
@@ -922,7 +935,7 @@ module.exports = {
                     await interaction.editReply({ components: [plantingRow] });
                     return;
                 } catch (error) {
-                    await buttonInteraction.followUp({ content: `La sauvegarde a échoué.`, ephemeral: true });
+                    await buttonInteraction.followUp({ content: `${locales[user.lang].plantationError3}`, ephemeral: true });
                     console.error(error);
                 }
                 return;
@@ -934,8 +947,8 @@ module.exports = {
                 // Créer le message d'embed principal
                 const embed2 = new EmbedBuilder()
                 .setColor(color)
-                .setTitle('Tes plantations')
-                .setDescription('Sélectionne une plantation pour effectuer une action.')
+                .setTitle(`${locales[user.lang].plantationTitle}`)
+                .setDescription(`${locales[user.lang].plantationDescription}`)
                 // On boucle autant de fois qu'il y a de slots
                 let nb = 0;
                 for (const slot in userPlantations) {
@@ -951,23 +964,23 @@ module.exports = {
 
                     // On gère les plantations au cas où l'utilisateur n'en a pas
                     if (userPlantations[slot].type === undefined) {
-                        userType = "*`Vide`*";
+                        userType = `${locales[user.lang].plantationEmpty}`;
                         userFertilized = " ";
                         userAntiParasite = " ";
                         userArrosage = " ";
                         userTimeleft = " ";
                     } else {
-                        userFertilized = userPlantations[slot].fertilized ? "`Fertilisation : ✅`" : "`Fertilisation : ⭕`";
-                        userAntiParasite = userPlantations[slot].antiParasite ? "`Anti-parasites : ✅`" : "`Anti-parasites : ⭕`";
+                        userFertilized = userPlantations[slot].fertilized ? `${locales[user.lang].plantationFertilized}` : `${locales[user.lang].plantationNotFertilized}`;
+                        userAntiParasite = userPlantations[slot].antiParasite ? `${locales[user.lang].plantationPestTreatment}` : `${locales[user.lang].plantationNotPestTreatment}`;
                         userPlantations[slot].niveau_arrosage = userPlantations[slot].niveau_arrosage || 0;
                         const tempsActuel = Date.now();
                         const temps = formatMs(userPlantations[slot].readyTime - tempsActuel);
 
-                        userType = `\`Variété : ${capitalize(userPlantations[slot].type)}\``;
-                        userArrosage = `\`Arrosage : ${userPlantations[slot].niveau_arrosage} fois\``;
-                        userTimeleft = (temps.hours <= 0 && temps.minutes <= 0 && temps.seconds <= 0) ? `\`Statut : ✅ Prête\`` : `\`Statut : 🕒 ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
+                        userType = `\`${locales[user.lang].plantationVariety} ${capitalize(userPlantations[slot].type)}\``;
+                        userArrosage = `\`${locales[user.lang].plantationWatering} ${userPlantations[slot].niveau_arrosage} ${locales[user.lang].plantationWateringTimes}\``;
+                        userTimeleft = (temps.hours <= 0 && temps.minutes <= 0 && temps.seconds <= 0) ? `${locales[user.lang].plantationStatusOk}` : `\`${locales[user.lang].plantationStatusInProgress} ${temps.hours}h ${temps.minutes}m ${temps.seconds}s\``;
                         if (isNaN(temps.hours) || isNaN(temps.minutes) || isNaN(temps.seconds)) {
-                            userTimeleft = `\`Statut : 🕒 Non défini\``;
+                            userTimeleft = `${locales[user.lang].plantationStatusUndefined}`;
                         }
                     }
                     embed2.addFields({ name: `🌿 Slot ${nb} :`, value: `${userType}\n${userFertilized}\n${userAntiParasite}\n${userArrosage}\n${userTimeleft}` })
@@ -981,7 +994,7 @@ module.exports = {
         });
 
         collector.on('end', (message) => {
-            interaction.followUp({ content: ">>> ⌛ **Ta plantation a expiré...**\n tape la commande \`/plantations\` pour y retourner. ", ephemeral: true }); 
+            interaction.followUp({ content: `>>> ⌛ ${locales[user.lang].plantationExpired}`, ephemeral: true }); 
             menuOpen = false;
             messagePlantations.delete(message);
         });

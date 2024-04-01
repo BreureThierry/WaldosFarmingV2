@@ -16,6 +16,12 @@ const color = config.bot.botColor;
 const devise = config.bot.devise;
 // IMAGES
 const imgSelling = './assets/img/marchand.png';
+// LANG
+const locales = {};
+for (const file of fs.readdirSync('./locale')) {
+    locales[file.split('.')[0]] = require(`../../locale/${file}`);
+}
+// MENU
 let sellerOpen = false;
 let openedByUserId;
 
@@ -24,23 +30,32 @@ client.login(process.env.token);
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('vendre')
-        .setDescription('Vendre tes récoltes à un marchand.'),
+        .setDescription('Sell your crops to a merchant.'),
     async execute(interaction) {
         const date = new Date().toLocaleString();
         // Charger la base de données
         try {
             database = JSON.parse(fs.readFileSync("database/database.json", 'utf8'));
         } catch (error) {
-            interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que des données importantes n'ont pas pu être récupérées...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true});
-            console.log(`${date} [/plantations] Erreur lors du chargement de la base de données.`);
+            interaction.reply({ content: `>>> ${locales.en.sellerErrorLoading}\n \r${locales.fr.sellerError}`, ephemeral: true});
+            console.log(`${date} [vendre] Erreur lors du chargement de la base de données.`);
             console.error(error);
             return;
         }
 
         // Récupère l'utilisateur
         const user = await loadUser(interaction.user.id);
-        if (!user) { return interaction.reply({ content: ">>> Tu n'es pas enregistré en tant que grower !\nUtilise la commande \`/demarrer\` pour t'enregistrer.", ephemeral: true}); }
-        if (!user.id) { return interaction.reply({ content: `>>> 🤯 Quelque chose a mal tourné ! Il semblerait que ta sauvegarde soit défectueuse...\n \r*N'hésite pas à signaler ce bug avec une capture d'écran.*\n \r\`${date}\` `, ephemeral: true}); }
+        if (!user) { return interaction.reply({ content: `>>> ${locales.en.sellerNotGrower}\n \r${locales.fr.sellerNotGrower}`, ephemeral: true}); }
+        if (!user.id) { return interaction.reply({ content: `>>> ${locales.en.sellerErrorLoading}\n \r${locales.fr.sellerErrorLoading}`, ephemeral: true}); }
+        
+        if (!user.lang) {
+            user.lang = config.bot.defaultLang;
+            console.log(`Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
+            // Enregistrer dans la base de donnée
+            // await saveDb(interaction.user.id, user);
+        }
+
+        
         // Vérifier si le menu marchand est ouvert
         const userId = interaction.user.id;
 
@@ -50,7 +65,7 @@ module.exports = {
         }
 
         if (sellerOpen && userId === openedByUserId) {
-            return interaction.reply({ content: ">>> L'interface du marchand est déjà ouverte.", ephemeral: true });
+            return interaction.reply({ content: `>>> ${locales.en.sellerAlreadyOpened}`, ephemeral: true });
         } 
         sellerOpen = true;
         openedByUserId = userId;
@@ -58,7 +73,7 @@ module.exports = {
         // Créer le bouton "Vendre" et la ligne d'action
         const vendrePlanteButton = new ButtonBuilder()
             .setCustomId('vendre_plante')
-            .setLabel('Vendre les plantes')
+            .setLabel(`${locales[user.lang].sellerSellingPlants}`)
             .setEmoji('🌿')
             .setStyle(ButtonStyle.Primary)
             .setDisabled(true);
@@ -73,7 +88,7 @@ module.exports = {
             }
             const button = new ButtonBuilder()
                 .setCustomId(`vendre_${key}`)
-                .setLabel(`Vendre ${user.inventaire.graine[key]} graines de ${name} (${valeurGraines} ${devise})`)
+                .setLabel(`${locales[user.lang].sellerSelling} ${user.inventaire.graine[key]} ${locales[user.lang].sellerSeedsOf} ${name} (${valeurGraines} ${devise})`)
                 .setEmoji('🌱')
                 .setDisabled(true)
                 .setStyle(ButtonStyle.Success);
@@ -116,20 +131,20 @@ module.exports = {
         }
 
         const embedMarchand = new EmbedBuilder()
-        .setTitle(`Marchand`)
+        .setTitle(`${locales[user.lang].sellerSelling}`)
         .setImage('https://media.discordapp.net/attachments/1214678292909785088/1221094357373816912/marchand.png?ex=661153bd&is=65fedebd&hm=ec0a4e4672480f4e9da53a71fe7cd2e62e3dd3057f7a16825d4811aa8f7594ad&=&format=webp&quality=lossless&width=810&height=491')
         .setColor(color)
-        .setDescription(`Bonjour grower.\nJe recherche des variétés de plantes spécifique, tu en a ?\nLaisse moi jetter un oeil à ton inventaire... `)
+        .setDescription(`${locales[user.lang].sellerDescription}`)
 
         // Récupère les infos de chaque plantes dans la base de donnée pour afficher les prix du marchand
         for (const [key, value] of Object.entries(dbPlants)) {
             const name = capitalize(key);
             const price = value.valeur;
-            embedMarchand.addFields({ name: `${name} :`, value: `*J'achète cette variété pour \`${price} ${devise}\` la plante.*`})
+            embedMarchand.addFields({ name: `${name} :`, value: `*${locales[user.lang].sellerPlantsField} \`${price} ${devise}\` ${locales[user.lang].sellerPlantsField2}*`})
         }
-        embedMarchand.addFields({ name: `Graines`, value: `*Je rachète les graines à leurs prix d'achat en boutique.*`})
+        embedMarchand.addFields({ name: `${locales[user.lang].sellerSeedsTitle}`, value: `*${locales[user.lang].sellerSeedsField}*`})
 
-        embedMarchand.addFields({ name: `Valeur total :`, value: `🌿 Plantes : *${totalValueInventory} ${devise}*`})
+        embedMarchand.addFields({ name: `${locales[user.lang].sellerTotalValue}`, value: `🌿 ${locales[user.lang].sellerPlants} *${totalValueInventory} ${devise}*`})
         
         const marchandMessage = await interaction.reply({ embeds: [embedMarchand], components: [rowVendre], fetchReply: true, ephemeral: true});
 
@@ -156,23 +171,23 @@ module.exports = {
                 let phraseSupp;
                 switch (true) {
                     case (totalValueInventory < 100):
-                        phraseSupp = 'C\'est toujours ça de pris !';
-                        user.xp += totalValueInventory;
+                        phraseSupp = `${locales[user.lang].sellerAdditionalSentence1}`;
+                        // user.xp += totalValueInventory;
                         break;
                     case (totalValueInventory > 100 && totalValueInventory < 500):
-                        phraseSupp = 'Une bonne affaire !';
-                        user.xp += 1000;
+                        phraseSupp = `${locales[user.lang].sellerAdditionalSentence2}`;
+                        // user.xp += 1000;
                         break;
                     case (totalValueInventory > 500 && totalValueInventory < 1000):
-                        phraseSupp = 'Une belle vente !';
-                        user.xp += 5000;
+                        phraseSupp = `${locales[user.lang].sellerAdditionalSentence3}`;
+                        // user.xp += 5000;
                         break;
                     case (totalValueInventory > 1000):
-                        phraseSupp = 'Un très bon deal !';
-                        user.xp += 10000;
+                        phraseSupp = `${locales[user.lang].sellerAdditionalSentence4}`;
+                        // user.xp += 10000;
                         break;
                     default:    
-                        phraseSupp = 'Pas terrible...';
+                        phraseSupp = `${locales[user.lang].sellerAdditionalSentence0}`;
                     break;
                 }
 
@@ -183,8 +198,8 @@ module.exports = {
                     // Enregistrer dans la base de donnée
                     await saveDb(interaction.user.id, user);
                     // Réponse privée
-                    embedMessage.setTitle('Vente effectuée').setDescription(`>>> C'était un plaisir de faire affaire avec toi ${interaction.user.globalName}.\nVoilà tes \`${totalValueInventory} ${devise}\`.\n \rJ'espère te revoir bientôt, je suis toujours à la recherche de plante alors n'hésite pas à revenir me voir.`);
-                    embedMarchand.data.fields[4].value = `🌿 Plantes : 0 ${devise}`;
+                    embedMessage.setTitle(`${locales[user.lang].sellerSaleCompleted}`).setDescription(`>>> ${locales[user.lang].sellerSaleCompletedAdditional1} ${interaction.user.globalName}.\n${locales[user.lang].sellerSaleCompletedAdditional2} \`${totalValueInventory} ${devise}\`.\n \r${locales[user.lang].sellerSaleCompletedAdditional3}`);
+                    embedMarchand.data.fields[4].value = `🌿 ${locales[user.lang].sellerPlants} 0 ${devise}`;
                     await buttonInteraction.editReply({ embeds: [embedMarchand], ephemeral: true });
                     await interaction.followUp({ embeds: [embedMessage], ephemeral: true });
 
@@ -192,14 +207,14 @@ module.exports = {
                     const imageSelling = new AttachmentBuilder(imgSelling);
                     const publicReponse = new EmbedBuilder()
                     .setColor(color)
-                    .setTitle(`Marchand`)
+                    .setTitle(`${locales[user.lang].sellerTitle}`)
                     .setImage(`attachment://${fileUrl(imgSelling)}`)
-                    .setDescription(`**${user.nomServeur}** a vendu ses récoltes au marchand pour \`${totalValueInventory} ${devise}\`\n${phraseSupp}`);
+                    .setDescription(`**${user.nomServeur}** ${locales[user.lang].sellerPublic} \`${totalValueInventory} ${devise}\`\n${phraseSupp}`);
                     await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [imageSelling] , fetchReply: true });
                     return;
                 } catch (error) {
                     console.error(error);
-                    return await buttonInteraction.reply({ content: `>>> Un problème est survenu.`, ephemeral: true });
+                    return await buttonInteraction.reply({ content: `>>> ${locales[user.lang].sellerError2}`, ephemeral: true });
                 }
             }
             // Boucle chaque variété de graine dispo
@@ -216,10 +231,10 @@ module.exports = {
                             user.inventaire.money += valeurGraine;
                             // Supprime la graine de l'inventaire de l'utilisateur
                             user.inventaire.graine[key] = 0;
-                            rowVendre.components[test].setDisabled(true).setLabel(`Vendre 0 graines de ${key} (0 ${devise})`);
+                            rowVendre.components[test].setDisabled(true).setLabel(`${locales[user.lang].sellerSelling} 0 ${locales[user.lang].sellerSeedsOf} ${key} (0 ${devise})`);
                             await buttonInteraction.update({embeds: [embedMarchand], components: [rowVendre], fetchReply: true, ephemeral: true});
                             try {
-                                await interaction.followUp({ content: `>>> Tu a vendu toutes tes graines de ${capitalize(key)} pour \`${valeurGraine} ${devise}\``, ephemeral: true });
+                                await interaction.followUp({ content: `>>> **${capitalize(key)}** | ${locales[user.lang].sellerSaleCompleted2} \`${valeurGraine} ${devise}\``, ephemeral: true });
                                 // Enregistre les modifications dans la base de donnée
                                 await saveDb(interaction.user.id, user);
                             } catch (error) {
@@ -231,7 +246,7 @@ module.exports = {
             }
         });
         collector.on('end', (message) => {
-            interaction.followUp({ content: ">>> ⌛ **L'interface du marchand a expiré...**\n tape la commande \`/vendre\` pour y retourner. ", ephemeral: true }); 
+            interaction.followUp({ content: `>>> ⌛ ${locales[user.lang].sellerExpired}`, ephemeral: true }); 
             sellerOpen = false;
         });
     },
