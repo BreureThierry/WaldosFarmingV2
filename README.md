@@ -109,9 +109,9 @@ Le niveau de difficulté se traduit par le nombre d'arrosages nécessaires.
 Les variétés difficiles sont plus exigeantes et la marge d'erreur est quasi nulle, contrairement aux variétés faciles.
 Un nombre d'arrosages à 0 ou supérieur à 9 tuera la plante.
 
-Une plante peut être récoltée 2 heures après avoir été plantée.
+Les plantes selon leurs variétées ont des temps de coissance différentes.
 Des attaques de parasites peuvent détruire la plante ou réduire son niveau de qualité pendant sa croissance.
-Traiter sa parcelle contre les parasites évite ces attaques mais a 50% de chance de diminuer son niveau de qualité de 1.
+Traiter sa parcelle contre les parasites évite ces attaques mais a 90% de chance de diminuer son niveau de qualité de 1.
 Une parcelle non traité contre les parasites a 70% de chance de subir une attaque.
 Lorsqu'une parcelle subit une attaque parasitaire la plante à 40% de chance de mourir et 60% de chance de diminuer son niveau de qualité de 1.
 
@@ -125,9 +125,9 @@ Il existe 5 niveaux de récolte :
 
 - Niveau 0 : L'utilisateur ne récolte pas la plante (aucun bonus).
 - Niveau 1 : L'utilisateur récolte la plante (aucun bonus).
-- Niveau 2 : L'utilisateur récolte la plante (bonus : 1 chance sur 2 d'obtenir 1 graine du même type).
-- Niveau 3 : L'utilisateur récolte la plante (bonus : 1 chance sur 2 d'obtenir 2 graines du même type).
-- Niveau 4 : L'utilisateur récolte la plante (bonus : 1 chance sur 2 de doubler la récolte ou d'obtenir une graine d'un type aléatoire parmi les variétés disponibles).
+- Niveau 2 : L'utilisateur récolte la plante (bonus : 1 chance sur 2 d'obtenir 1 graine).
+- Niveau 3 : L'utilisateur récolte la plante (bonus : 1 chance sur 2 d'obtenir 2 graines).
+- Niveau 4 : L'utilisateur récolte la plante (bonus : 1 chance sur 2 de doubler la récolte ou d'obtenir 4 graines).
 ```
 ## Détail technique 
 
@@ -160,6 +160,7 @@ Chaque utilisateur est représenté par un objet JSON qui contient les propriét
 - `id` : ID Discord de l'utilisateur.
 - `nomServeur` : Nom global de l'utilisateur.
 - `nom` : Nom d'utilisateur Discord.
+- `lang` : La langue choisi par l'utilisateur.
 - `inventaire` : Inventaire de l'utilisateur.
 - `plantations` : Plantations de l'utilisateur.
 
@@ -192,8 +193,10 @@ Ce fichier contient :
 - `botId` : L'ID Discord du bot.
 - `botColor` : Le code couleur des messages stylisé par le bot.
 - `devise` : La devise de l'argent du jeu.
+- `defaultLang` : La langue par défaut du jeu (en/fr).
 - `farmingChannel` : L'ID du salon dans lequel les messages public sont envoyée.
-- `dureePousse` : La durée de croissance des plantes (en heure).
+- `devMode` : Activer ou désactiver le mode maintenance (Les utilisateur ne peuvent plus utilisé le bot en mode maintenance).
+- `devID` : L'ID du developpeur qui pourra utiliser le bot lorsque le mode maintenance est activé.
 - `startMoney` : Le montant d'argent avec lequel l'utilisateur commence.
 
 ![commande plantations](./readme_assets/config.png)
