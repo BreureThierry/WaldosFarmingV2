@@ -14,12 +14,7 @@
     }
   },
   "plantations": {
-    "slot1": {
-      "type": "purple",
-      "plantingTime": 108076347109,
-      "readyTime": 108083547109,
-      "niveau_arrosage": 0
-    },
+    "slot1": {},
     "slot2": {},
     "slot3": {},
     "slot4": {}

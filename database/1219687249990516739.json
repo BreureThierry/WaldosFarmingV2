@@ -2,16 +2,15 @@
   "id": "1219687249990516739",
   "nomServeur": "Lmdc.nft",
   "nom": "lmdc.nft",
-  "xp": 436,
+  "xp": 796,
   "inventaire": {
-    "money": 264,
+    "money": 659,
     "graine": {
       "kush": 0,
-      "purple": 18
+      "purple": 4,
+      "amnezia": 0
     },
-    "plante": {
-      "purple": 6
-    },
+    "plante": {},
     "outils": {
       "arrosoir": 9,
       "fertilisant": 0,
@@ -21,35 +20,35 @@
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1711153469633,
-      "readyTime": 1711154069633,
-      "niveau_arrosage": 7,
+      "plantingTime": 1711587344057,
+      "readyTime": 1711588244057,
       "fertilized": false,
-      "antiParasite": false
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
     "slot2": {
       "type": "purple",
-      "plantingTime": 1711153477468,
-      "readyTime": 1711154077468,
-      "niveau_arrosage": 7,
+      "plantingTime": 1711587351382,
+      "readyTime": 1711588251382,
       "fertilized": false,
-      "antiParasite": false
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
-      "plantingTime": 1711153484875,
-      "readyTime": 1711154084875,
-      "niveau_arrosage": 7,
+      "plantingTime": 1711587357365,
+      "readyTime": 1711588257365,
       "fertilized": false,
-      "antiParasite": false
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1711153491257,
-      "readyTime": 1711154091257,
-      "niveau_arrosage": 7,
+      "plantingTime": 1711587363492,
+      "readyTime": 1711588263492,
       "fertilized": false,
-      "antiParasite": false
+      "antiParasite": false,
+      "niveau_arrosage": 7
     }
   }
 }

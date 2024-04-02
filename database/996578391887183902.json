@@ -4,13 +4,15 @@
   "nom": "deletedaccount0969",
   "xp": 0,
   "inventaire": {
-    "money": 74,
+    "money": 6,
     "graine": {
-      "kush": 0,
-      "amnezia": 0
+      "kush": 7,
+      "amnezia": 0,
+      "purple": 0
     },
     "plante": {
-      "kush": 2
+      "kush": 18,
+      "purple": 2
     },
     "outils": {
       "arrosoir": 1,
@@ -19,15 +21,36 @@
   },
   "plantations": {
     "slot1": {
-      "type": "kush",
-      "plantingTime": 1709884039640,
-      "readyTime": 1709884639640,
-      "niveau_arrosage": 9,
+      "type": "purple",
+      "plantingTime": 1712045927449,
+      "readyTime": 1712046827449,
       "fertilized": false,
-      "antiParasite": false
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
-    "slot2": {},
-    "slot3": {},
-    "slot4": {}
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1712045168553,
+      "readyTime": 1712046068553,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1712045191296,
+      "readyTime": 1712046091296,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1712045210087,
+      "readyTime": 1712046110087,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
+    }
   }
 }

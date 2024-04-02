@@ -596,7 +596,7 @@ module.exports = {
                                 // console.log('Attaque parasitaire non déclenchée');
                                 image0 = new AttachmentBuilder(imgharvest0);
                                 publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`)
-                                .setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestUserCollectedNothingPublic}.`);
+                                .setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestUserCollectedNothingPublic}`);
                             }
                             // Message de réponse publique
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image0] , fetchReply: true });

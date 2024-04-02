@@ -35,7 +35,7 @@ module.exports = {
                     userC.lang = config.bot.defaultLang;
                     console.log(`[classement] Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
                     // Enregistrer dans la base de donnée
-                    await saveDb(interaction.user.id, userC);
+                    // await saveDb(interaction.user.id, userC);
                 }
 
                 const users = [];
@@ -64,8 +64,8 @@ module.exports = {
                 const embedClassement = new EmbedBuilder()
                     .setColor(color)
                     .setAuthor({ name: `${locales[userC.lang].leaderboardTitle}` })
-                    .setDescription(`ㅤ\n${top10.join(' \n')}`)
-                    .setFooter({ text: `ㅤ\n${locales[userC.lang].leaderboardTotalPlayers} ${totalPlayers} ㅤㅤㅤㅤㅤㅤㅤㅤㅤ${devise} : ${totalCirculationPoints}`});
+                    .setDescription(`ㅤ\n${top10.join(' \n \r')}`)
+                    .setFooter({ text: `ㅤ\n${locales[userC.lang].leaderboardTotalPlayers} ${totalPlayers}ㅤ • ㅤ${devise} : ${totalCirculationPoints}`});
     
                 // Envoyer le message d'embed
                 await interaction.reply({ content: `>>> ${interaction.user}`, embeds: [embedClassement] });

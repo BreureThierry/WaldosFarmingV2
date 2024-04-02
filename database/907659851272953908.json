@@ -2,14 +2,16 @@
   "id": "907659851272953908",
   "nomServeur": "[GGA] Khâx | XBorg",
   "nom": "ggakhaxxborgrichcalls",
-  "xp": 1030,
+  "xp": 2030,
   "inventaire": {
-    "money": 190,
+    "money": 490,
     "graine": {
-      "purple": 1
+      "purple": 6,
+      "kush": 0,
+      "amnezia": 0
     },
     "plante": {
-      "purple": 26
+      "purple": 13
     },
     "outils": {
       "arrosoir": 1
@@ -18,35 +20,35 @@
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1711144540624,
-      "readyTime": 1711145140624,
-      "niveau_arrosage": 7,
+      "plantingTime": 1712061532050,
+      "readyTime": 1712062432050,
       "fertilized": false,
-      "antiParasite": false
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
     "slot2": {
       "type": "purple",
+      "plantingTime": 1712061539771,
+      "readyTime": 1712062439771,
       "fertilized": false,
       "antiParasite": false,
-      "niveau_arrosage": 7,
-      "plantingTime": 1711144561864,
-      "readyTime": 1711145161864
+      "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
+      "plantingTime": 1712061546467,
+      "readyTime": 1712062446467,
       "fertilized": false,
       "antiParasite": false,
-      "niveau_arrosage": 7,
-      "plantingTime": 1711144529523,
-      "readyTime": 1711145129523
+      "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1711144593118,
-      "readyTime": 1711145193118,
-      "niveau_arrosage": 7,
+      "plantingTime": 1712061553391,
+      "readyTime": 1712062453391,
       "fertilized": false,
-      "antiParasite": false
+      "antiParasite": false,
+      "niveau_arrosage": 7
     }
   }
 }

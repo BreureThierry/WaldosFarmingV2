@@ -2,52 +2,54 @@
   "id": "638481011902119936",
   "nomServeur": "ARMA62",
   "nom": "arma62",
-  "xp": 490,
+  "xp": 1806,
   "inventaire": {
-    "money": 195,
+    "money": 560,
     "graine": {
-      "purple": 4,
+      "purple": 8,
       "amnezia": 0,
       "kush": 0
     },
-    "plante": {},
+    "plante": {
+      "purple": 6
+    },
     "outils": {
       "arrosoir": 1,
-      "fertilisant": 8
+      "fertilisant": 0
     }
   },
   "plantations": {
     "slot1": {
-      "type": "amnezia",
-      "plantingTime": 1711149981599,
-      "readyTime": 1711150581599,
-      "niveau_arrosage": 7,
-      "fertilized": true,
-      "antiParasite": false
+      "type": "purple",
+      "plantingTime": 1712011025676,
+      "readyTime": 1712011925676,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
     "slot2": {
-      "type": "amnezia",
-      "plantingTime": 1711150000213,
-      "readyTime": 1711150600213,
-      "niveau_arrosage": 7,
-      "fertilized": true,
-      "antiParasite": false
+      "type": "purple",
+      "plantingTime": 1712011035843,
+      "readyTime": 1712011935843,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
     "slot3": {
-      "type": "kush",
-      "plantingTime": 1711150023469,
-      "readyTime": 1711150623469,
-      "niveau_arrosage": 7,
-      "fertilized": true,
-      "antiParasite": false
+      "type": "purple",
+      "plantingTime": 1712011044191,
+      "readyTime": 1712011944191,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
     },
     "slot4": {
-      "type": "kush",
-      "plantingTime": 1711150043346,
-      "readyTime": 1711150643346,
-      "niveau_arrosage": 7,
-      "fertilized": true,
-      "antiParasite": false
+      "type": "purple",
+      "plantingTime": 1712011052492,
+      "readyTime": 1712011952492,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
     }
   }
 }

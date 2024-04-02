@@ -1,0 +1,54 @@
+{
+  "id": "917136950262124605",
+  "nomServeur": "BARITO I WALDOS",
+  "nom": "barit0o",
+  "xp": 18,
+  "inventaire": {
+    "money": 30,
+    "graine": {
+      "purple": 0,
+      "amnezia": 0,
+      "kush": 0
+    },
+    "plante": {},
+    "outils": {
+      "arrosoir": 1,
+      "fertilisant": 0,
+      "produit_antiparasite": 0
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1712057763522,
+      "readyTime": 1712058663522,
+      "fertilized": true,
+      "antiParasite": false,
+      "niveau_arrosage": 2
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1712057779462,
+      "readyTime": 1712058679462,
+      "fertilized": true,
+      "antiParasite": false,
+      "niveau_arrosage": 4
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1712057818945,
+      "readyTime": 1712058718945,
+      "fertilized": true,
+      "antiParasite": false,
+      "niveau_arrosage": 1
+    },
+    "slot4": {
+      "type": "amnezia",
+      "plantingTime": 1712057842302,
+      "readyTime": 1712058442302,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 3
+    }
+  }
+}

@@ -4,50 +4,23 @@
   "nom": "tusblux",
   "xp": 30,
   "inventaire": {
-    "money": 130,
+    "money": 654,
     "graine": {
-      "purple": 0,
-      "amnezia": 3,
+      "purple": 4,
+      "amnezia": 0,
       "kush": 0
     },
     "plante": {},
     "outils": {
       "arrosoir": 1,
-      "fertilisant": 0
+      "fertilisant": 17
     }
   },
   "plantations": {
-    "slot1": {
-      "type": "purple",
-      "fertilized": false,
-      "antiParasite": false,
-      "niveau_arrosage": 7,
-      "plantingTime": 1711347106860,
-      "readyTime": 1711348006860
-    },
-    "slot2": {
-      "type": "amnezia",
-      "fertilized": false,
-      "antiParasite": false,
-      "niveau_arrosage": 7,
-      "plantingTime": 1711347129332,
-      "readyTime": 1711347729332
-    },
-    "slot3": {
-      "type": "amnezia",
-      "fertilized": true,
-      "antiParasite": false,
-      "niveau_arrosage": 7,
-      "plantingTime": 1711347151909,
-      "readyTime": 1711347751909
-    },
-    "slot4": {
-      "type": "amnezia",
-      "plantingTime": 1711347166052,
-      "readyTime": 1711347766052,
-      "fertilized": false,
-      "antiParasite": false,
-      "niveau_arrosage": 7
-    }
-  }
+    "slot1": {},
+    "slot2": {},
+    "slot3": {},
+    "slot4": {}
+  },
+  "lang": "en"
 }

@@ -1,54 +1,55 @@
 {
-    "id": "807363758158381087",
-    "nomServeur": "tony2201/BALLS",
-    "nom": "tony2201",
-    "xp": 1000,
-    "inventaire": {
-      "money": 3159,
-      "graine": {
-        "purple": 1,
-        "amnezia": 6
-      },
-      "plante": {
-        "purple": 7,
-        "amnezia": 5
-      },
-      "outils": {
-        "arrosoir": 1
-      }
+  "id": "807363758158381087",
+  "nomServeur": "tony2201/BALLS",
+  "nom": "tony2201",
+  "xp": 33132,
+  "inventaire": {
+    "money": 8255,
+    "graine": {
+      "purple": 12,
+      "amnezia": 0,
+      "kush": 7
     },
-    "plantations": {
-      "slot1": {
-        "type": "purple",
-        "plantingTime": 1711124960856,
-        "readyTime": 1711125560856,
-        "niveau_arrosage": 7,
-        "fertilized": false,
-        "antiParasite": false
-      },
-      "slot2": {
-        "type": "purple",
-        "plantingTime": 1711124995625,
-        "readyTime": 1711125595625,
-        "niveau_arrosage": 7,
-        "fertilized": false,
-        "antiParasite": false
-      },
-      "slot3": {
-        "type": "amnezia",
-        "plantingTime": 1711125033424,
-        "readyTime": 1711125633424,
-        "niveau_arrosage": 7,
-        "fertilized": false,
-        "antiParasite": false
-      },
-      "slot4": {
-        "type": "amnezia",
-        "plantingTime": 1711125077952,
-        "readyTime": 1711125677952,
-        "niveau_arrosage": 7,
-        "fertilized": false,
-        "antiParasite": false
-      }
+    "plante": {
+      "purple": 64,
+      "kush": 1
+    },
+    "outils": {
+      "arrosoir": 1
+    }
+  },
+  "plantations": {
+    "slot1": {
+      "type": "purple",
+      "plantingTime": 1712070924287,
+      "readyTime": 1712071824287,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
+    },
+    "slot2": {
+      "type": "purple",
+      "plantingTime": 1712070933716,
+      "readyTime": 1712071833716,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
+    },
+    "slot3": {
+      "type": "purple",
+      "plantingTime": 1712070942470,
+      "readyTime": 1712071842470,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
+    },
+    "slot4": {
+      "type": "purple",
+      "plantingTime": 1712070951211,
+      "readyTime": 1712071851211,
+      "fertilized": false,
+      "antiParasite": false,
+      "niveau_arrosage": 7
     }
   }
+}
