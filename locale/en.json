@@ -122,6 +122,7 @@
 
   "plantationError": "A problem has occurred. Error : plantation[226]",
 
+  "plantationSlotEmpty":"Empty",
   "plantationSlotFertilized": "`✅ Fertilized`",
   "plantationSlotNotFertilized": "`⭕ Not fertilized`",
   "plantationSlotPestTreatment": "`✅ Treated`",
@@ -170,7 +171,7 @@
   "plantationHarvestWateringProblem": "Watering issue.",
   "plantationHarvestWateringProblem1": "Likely a watering problem.",
 
-  "plantationRefreshVariety": "*`None`*",
+  "plantationRefreshVariety": "`❌`",
   "plantationRefreshFertilization": "`⭕ Not fertilized`",
   "plantationRefreshPestTreatment": "`⭕ Not treated`",
   "plantationStatusOk1": "`Status : ✅`",

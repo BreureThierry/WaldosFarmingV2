@@ -235,8 +235,8 @@ module.exports = {
             // Cette condition s'assure de récupérer les plantations du joueurs lorsqu'il appuis sur le bouton de retour
             if (user.plantations[slot]) {
                 // console.log(slot);
-                if (userPlantations[slot].type === undefined || userPlantations[slot].type === 'aucune') {
-                    userPlantations[slot].type = "aucune"; // VERIF ICI LORS DU CHANGEMENT DE LANGUE §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§$$$$$$$$$$$$$$$$$!!!!!
+                if (userPlantations[slot].type === undefined || userPlantations[slot].type === 'aucune' || userPlantations[slot].type === '❌') {
+                    userPlantations[slot].type = "❌";
                     slotRow.components[0].setDisabled(false);
                 }
 
@@ -365,7 +365,7 @@ module.exports = {
             if (buttonInteraction.customId === `planter_${slot}`) {
                 const user = await loadUser(interaction.user.id);
                 // Vérifie si le slot à déjà une graine                
-                if (user.plantations[slot].type === "aucune" || user.plantations[slot].type === undefined) {
+                if (user.plantations[slot].type === "❌" || user.plantations[slot].type === "aucune" || user.plantations[slot].type === undefined) {
                     // Vérrouillage des boutons si l'utilisateur n'a pas la graine asociée
                     if (user.inventaire.graine.kush <= 0 || user.inventaire.graine.kush === undefined) {
                         plantingRow.components[0].setDisabled(true)
@@ -440,19 +440,22 @@ module.exports = {
                 }              
                 
                 // Construction de l'embed de réponse
-                const embedReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``).addFields( { name: `${locales[user.lang].plantationHarvestreport}`, value: `${locales[user.lang].plantationHarvestreportNoIssues}` } );
-                const publicReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``).addFields( { name: `${locales[user.lang].plantationHarvestreport}`, value: `${locales[user.lang].plantationHarvestreportNoIssues}` } );
+                const embedReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``);
+                const publicReponse = new EmbedBuilder().setColor(color).setTitle(`\`${capitalize(slot)}\``);
+                embedReponse.addFields( { name: `${locales[user.lang].plantationHarvestreport}`, value: `${locales[user.lang].plantationHarvestreportNoIssues}` } );
+                publicReponse.addFields( { name: `${locales[user.lang].plantationHarvestreport}`, value: `${locales[user.lang].plantationHarvestreportNoIssues}` } );
 
                 const exigenceGraine = database.objets.graine[typeGraine].exigence;
-                // console.log(`La graine ${typeGraine} a une niveau d'exigence de : ${exigenceGraine}`)
 
                 // Vérifier si le slot peut être récolté (temps)
                 const tempsActuel = Date.now();
                 const tempsRestant = userSlot.readyTime - tempsActuel;
                 
-                const attackParasite = randomAward(0.3); // 70% de chances d'une invasion parasitaire
-                const dyingPlant = randomAward(0.6); // 40% de chances que la plante meurt
-                
+                const attackParasite = randomAward(0.9); // 70% de chances d'une invasion parasitaire
+                const dyingPlant = randomAward(0.5); // 50% de chances que la plante meurt
+                const listParasites = [database.objets.parasites[1].name[user.lang],database.objets.parasites[2].name[user.lang],database.objets.parasites[3].name[user.lang]];
+                const typeParasite = randomSelection(listParasites);
+                let image0,image1;
                 // Si le temps restant est inférieur ou égal à 0 l'utilisateur peut récolter
                 if (tempsRestant <= 0) {
                     const niveauArrosage = userSlot.niveau_arrosage;
@@ -473,13 +476,13 @@ module.exports = {
                             console.log(`Niveau d'exigence inconnu !`);
                         return;
                     }
+                    // console.log(`-- CHECK --\n[plantations] ${slot} :\n- Attaque parasitaire : ${attackParasite} \n- Plante mourante : ${dyingPlant} \n- Type de parasite : ${typeParasite} \n- Niveau de récolte : ${harvestLevel}`);
+
                     // Si le slot est fertilisé on ajoute 1 au niveau de récolte
                     if (userSlot.fertilized) { harvestLevel += 1; }
                     // Si le slot n'est pas traité contre les parasites
                     if (!userSlot.antiParasite) {
-                        if (attackParasite) {                            
-                            const listParasites = [database.objets.parasites[1].name[user.lang],database.objets.parasites[2].name[user.lang],database.objets.parasites[3].name[user.lang]];
-                            const typeParasite = randomSelection(listParasites);
+                        if (attackParasite) {               
                             if (dyingPlant) {
                                 harvestLevel = 0;
                                 // Mise à jour du rapport de récolte si la récolte n'a pas survécu à l'attaque parasitaire
@@ -503,7 +506,7 @@ module.exports = {
                                 // Mise à jour du rapport de récolte si la récolte a survécu à l'attaque parasitaire
                                 embedReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestreportSome} ${typeParasite} ${locales[user.lang].plantationHarvestreportPlantSurvive}`;
                                 publicReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestreportSome} ${typeParasite} ${locales[user.lang].plantationHarvestreportPlantSurvive}`;
-                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote1}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)}.`);
+                                publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote1}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)}.`);                 
                                 if (typeParasite === database.objets.parasites[1].name[user.lang]) {
                                     image1 = new AttachmentBuilder(imgharvest0Chenille);
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Chenille)}`);
@@ -517,6 +520,11 @@ module.exports = {
                                     publicReponse.setImage(`attachment://${fileUrl(imgharvest0Araigne)}`);
                                 }
                             }                   
+                        } else {
+                            image1 = new AttachmentBuilder(imgharvest1);
+                            publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`);
+                            image0 = new AttachmentBuilder(imgharvest0);
+                            publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`);
                         }
                     } else {
                         const qualityDown = randomAward(0.1); // 90% de chances de perdre un niveau de récolte
@@ -546,13 +554,9 @@ module.exports = {
                         harvestLevel = 0;
                         embedReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem}`; 
                         publicReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem}`; 
-                        
-                    }
-                    if (niveauArrosage > 7) {
-                        embedReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem1}`; 
-                        publicReponse.data.fields[0].value = `${locales[user.lang].plantationHarvestWateringProblem1}`; 
-                        image1 = new AttachmentBuilder(imgharvest1);
-                        publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`);
+                        image0 = new AttachmentBuilder(imgharvest0);
+                        publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`)
+                        publicReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestUserCollectedNothingPublic}`);
                     }
 
                     award = randomAward(0.5); // 1 chance sur 2
@@ -579,10 +583,21 @@ module.exports = {
                             await interaction.editReply({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
 
                             // Réponse
-
                             embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestUserCollectedNothing}`);
                             // Message de réponse à l'utilisateur
                             await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            
+                            if (image0 === undefined) {
+                                console.log('case 1 image1 undefined replaced by imgharvest1');
+                                image1 = new AttachmentBuilder(imgharvest0);
+                                publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`);
+                            }
+                            if (!attackParasite) {
+                                // console.log('Attaque parasitaire non déclenchée');
+                                image0 = new AttachmentBuilder(imgharvest0);
+                                publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`)
+                                .setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestUserCollectedNothingPublic}.`);
+                            }
                             // Message de réponse publique
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image0] , fetchReply: true });
                             
@@ -629,6 +644,18 @@ module.exports = {
                             // Message de réponse à l'utilisateur
                             await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
                             // Message de réponse publique
+                            if (image1 === undefined) {
+                                console.log('case 1 image1 undefined replaced by imgharvest1');
+                                image1 = new AttachmentBuilder(imgharvest1);
+                                publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`);
+                            }
+                            if (!attackParasite) {
+                                // console.log('Attaque parasitaire non déclenchée');
+                                image1 = new AttachmentBuilder(imgharvest1);
+                                publicReponse.setImage(`attachment://${fileUrl(imgharvest1)}`)
+                                .setDescription(`**${locales[user.lang].plantationHarvestLevelNote1}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r**${user.nomServeur}** ${locales[user.lang].plantationHarvestLevel1Public} ${capitalize(typeGraine)}.`);
+                            }
+                            
                             await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image1] , fetchReply: true });
 
                             try {
@@ -918,7 +945,7 @@ module.exports = {
                     // Enregistrer dans la base de donnée
                     await saveDb(interaction.user.id, user);
 
-                    if (userPlantationsSlot.type === "aucune" || userPlantationsSlot.type === undefined) {
+                    if (userPlantationsSlot.type === "❌" || userPlantationsSlot.type === "aucune" || userPlantationsSlot.type === undefined) {
                         // Vérrouillage des boutons si l'utilisateur n'a pas la graine asociée
                         if (userInventory.graine.kush <= 0 || userInventory.graine.kush === undefined) {
                             plantingRow.components[0].setDisabled(true)
