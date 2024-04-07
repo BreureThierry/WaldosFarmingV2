@@ -2,45 +2,45 @@
     "objets": {
         "graine": {
             "kush": {
-                "prix": 3,
+                "prix": 5,
                 "description": {
                     "en": "An easy to grow variety.",
                     "fr": "Une variétée facile à cultiver."
                 },
                 "exigence": 0,
-                "temps": 5
+                "temps": 10
             },
             "amnezia": {
-                "prix": 4,
+                "prix": 10,
                 "description": {
                     "en": "A variety that requires some maintenance.",
                     "fr": "Une variétée qui demande un peu d'entretient."
                 },
                 "exigence": 1,
-                "temps": 10
+                "temps": 15
             },
             "purple": {
-                "prix": 5,
+                "prix": 15,
                 "description": {
                     "en": "A difficult to grow variety.",
                     "fr": "Une variétée difficile à cultiver."
                 },
                 "exigence": 2,
-                "temps": 15
+                "temps": 20
             }
         },
         "plante": {
             "kush": {
-                "prix": 6,
-                "valeur": 6,
+                "prix": 10,
+                "valeur": 30,
                 "description": {
                     "en": "An easy to grow variety.",
                     "fr": "Une variétée facile à cultiver."
                 }
             },
             "amnezia": {
-                "prix": 8,
-                "valeur": 8,
+                "prix": 15,
+                "valeur": 45,
                 "description": {
                     "en": "A variety that requires some maintenance.",
                     "fr": "Une variétée qui demande un peu d'entretient."
@@ -48,7 +48,7 @@
             },
             "purple": {
                 "prix": 10,
-                "valeur": 10,
+                "valeur": 50,
                 "description": {
                     "en": "A difficult to grow variety.",
                     "fr": "Une variétée difficile à cultiver."
@@ -68,7 +68,7 @@
                 }
             },
             "fertilisant": {
-                "prix": 5,
+                "prix": 15,
                 "name": {
                     "en": "Fertilizer",
                     "fr": "Fertilisant"
