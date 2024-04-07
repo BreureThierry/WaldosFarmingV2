@@ -15,7 +15,7 @@ module.exports = {
 		if (devMode) {
 			if (interaction.user.id != devID) {
 				console.log(`\x1b[33m🆕 /${interaction.commandName} executée par ${interaction.user.globalName} || BLOCK BY DEVMODE \x1b[37m`);
-				await interaction.reply({ content: '```🛠️  Le bot est en maintenance...```', ephemeral: true });
+				await interaction.reply({ content: '```🛠️ Bot is in maintenance...\n \r🛠️ Le bot est en maintenance...```', ephemeral: true });
 				
 			} else {
 				try {

@@ -451,7 +451,7 @@ module.exports = {
                 const tempsActuel = Date.now();
                 const tempsRestant = userSlot.readyTime - tempsActuel;
                 
-                const attackParasite = randomAward(0.9); // 70% de chances d'une invasion parasitaire
+                const attackParasite = randomAward(0.3); // 70% de chances d'une invasion parasitaire
                 const dyingPlant = randomAward(0.5); // 50% de chances que la plante meurt
                 const listParasites = [database.objets.parasites[1].name[user.lang],database.objets.parasites[2].name[user.lang],database.objets.parasites[3].name[user.lang]];
                 const typeParasite = randomSelection(listParasites);
