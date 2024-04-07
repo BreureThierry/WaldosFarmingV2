@@ -1017,7 +1017,12 @@ module.exports = {
             }
             try {
                 // Met à jour le message
-                await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2], fetchReply: true  });
+                if (!buttonInteraction.replied) {
+                    await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2], fetchReply: true  });
+                    return;
+                } else {
+                    console.log("Interaction déjà répondu ou expiré");
+                }
             } catch (error) {
                 if (error instanceof DiscordAPIError && error.code === 10062) {
                     console.log("L'interaction est inconnue ou a expiré");
