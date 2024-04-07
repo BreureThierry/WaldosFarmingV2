@@ -1012,14 +1012,21 @@ module.exports = {
                     }
                     embed2.addFields({ name: `🌿 Slot ${nb} :`, value: `${userType}\n${userFertilized}\n${userAntiParasite}\n${userArrosage}\n${userTimeleft}` })
                 }
-
                 await buttonInteraction.update({ embeds: [embed2], components: [row] });
                 return;
             }
-            // Met à jour le message
-            await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2], fetchReply: true  });
+            try {
+                // Met à jour le message
+                await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2], fetchReply: true  });
+            } catch (error) {
+                if (error instanceof DiscordAPIError && error.code === 10062) {
+                    console.log("L'interaction est inconnue ou a expiré");
+                } else {
+                    // Gérer les autres types d'erreurs
+                    console.error(error);
+                }
+            }
         });
-
         collector.on('end', (message) => {
             interaction.followUp({ content: `>>> ⌛ ${locales[user.lang].plantationExpired}`, ephemeral: true }); 
             menuOpen = false;
