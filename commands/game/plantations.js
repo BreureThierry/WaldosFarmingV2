@@ -376,8 +376,12 @@ module.exports = {
                     if (user.inventaire.graine.purple <= 0 || user.inventaire.graine.purple === undefined) {
                         plantingRow.components[2].setDisabled(true)
                     }
-                    // Mettre à jour la ligne de bouton pour que l'utilisateur choisisse la graine qu'il souhaite planter
-                    await buttonInteraction.update({ embeds: [slotEmbed], components: [plantingRow] });
+                    try {
+                        // Mettre à jour la ligne de bouton pour que l'utilisateur choisisse la graine qu'il souhaite planter
+                        await buttonInteraction.update({ embeds: [slotEmbed], components: [plantingRow] });
+                    } catch (error) {
+                        console.error(error);
+                    }
                     // Variable global pour récupérer le slot plus loin
                     slotActiv = slot;
                     return;
@@ -401,7 +405,11 @@ module.exports = {
                     userPlantations[slot].niveau_arrosage += 1;
                     // Mettre à jour l'embed
                     slotEmbed.data.fields[3].value = `\`${userPlantations[slot].niveau_arrosage} ${locales[user.lang].plantationWateringTimes}\``;
-                    await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
+                    try {
+                        await buttonInteraction.update({ embeds: [slotEmbed], components: [slotRow, slotRow2] });
+                    } catch (error) {
+                        console.error(error);
+                    }
                     // Enregistrer dans la base de donnée
                     await saveDb(interaction.user.id, user);
                     return;
@@ -527,7 +535,7 @@ module.exports = {
                             publicReponse.setImage(`attachment://${fileUrl(imgharvest0)}`);
                         }
                     } else {
-                        const qualityDown = randomAward(0.1); // 90% de chances de perdre un niveau de récolte
+                        const qualityDown = randomAward(0.25); // 75% de chances de perdre un niveau de récolte
                         if (qualityDown) {
                             harvestLevel -= 1;
                         }
@@ -584,8 +592,12 @@ module.exports = {
 
                             // Réponse
                             embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote0}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestUserCollectedNothing}`);
-                            // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            try {
+                                // Message de réponse à l'utilisateur
+                                await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            } catch (error) {
+                                console.error(error);
+                            }
                             
                             if (image0 === undefined) {
                                 console.log('case 1 image1 undefined replaced by imgharvest1');
@@ -641,8 +653,13 @@ module.exports = {
 
                             // Réponse
                             embedReponse.setDescription(`**${locales[user.lang].plantationHarvestLevelNote1}**\n${locales[user.lang].plantationHarvestLevel} ${harvestLevel}\n \r${locales[user.lang].plantationHarvestLevel1} ${capitalize(typeGraine)}.`);
-                            // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            
+                            try {
+                                // Message de réponse à l'utilisateur
+                                await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                            } catch (error) {
+                                console.error(error);
+                            }
                             // Message de réponse publique
                             if (image1 === undefined) {
                                 console.log('case 1 image1 undefined replaced by imgharvest1');
@@ -708,11 +725,15 @@ module.exports = {
 
                             // Réponse
                             const image2 = new AttachmentBuilder(imgharvest2);
-                            // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
-                            // Message de réponse publique
-                            publicReponse.setImage(`attachment://${fileUrl(imgharvest2)}`)
-                            await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image2] , fetchReply: true });
+                            try {
+                                // Message de réponse à l'utilisateur
+                                await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                                // Message de réponse publique
+                                publicReponse.setImage(`attachment://${fileUrl(imgharvest2)}`)
+                                await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image2] , fetchReply: true });
+                            } catch (error) {
+                                console.error(error);
+                            }
 
                             try {
                                 menuOpen = false;
@@ -766,11 +787,15 @@ module.exports = {
                             // Réponse
                             const image3 = new AttachmentBuilder(imgharvest3);
                             embedReponse.setImage(`attachment://${fileUrl(imgharvest3)}`);
-                            // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
-                            // Message de réponse publique
-                            publicReponse.setImage(`attachment://${fileUrl(imgharvest3)}`)
-                            await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image3] , fetchReply: true });
+                            try {
+                                // Message de réponse à l'utilisateur
+                                await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                                // Message de réponse publique
+                                publicReponse.setImage(`attachment://${fileUrl(imgharvest3)}`)
+                                await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image3] , fetchReply: true });
+                            } catch (error) {
+                                console.error(error);
+                            }
 
                             try {
                                 menuOpen = false;
@@ -825,11 +850,15 @@ module.exports = {
                             // Réponse
                             const image4 = new AttachmentBuilder(imgharvest4);
                             embedReponse.setImage(`attachment://${fileUrl(imgharvest4)}`);
-                            // Message de réponse à l'utilisateur
-                            await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
-                            // Message de réponse publique
-                            publicReponse.setImage(`attachment://${fileUrl(imgharvest4)}`)
-                            await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image4] , fetchReply: true });
+                            try {
+                                // Message de réponse à l'utilisateur
+                                await buttonInteraction.reply({ content: `${locales[user.lang].plantationHarvestVisible} <#${config.bot.farmingChannel}>.`,embeds: [embedReponse], ephemeral: true });
+                                // Message de réponse publique
+                                publicReponse.setImage(`attachment://${fileUrl(imgharvest4)}`)
+                                await client.channels.cache.get(config.bot.farmingChannel).send({ content: interaction.user.toString(), embeds: [publicReponse], files: [image4] , fetchReply: true });
+                            } catch (error) {
+                                console.error(error);
+                            }
 
                             try {
                                 menuOpen = false;
@@ -922,7 +951,11 @@ module.exports = {
                     { name: `${locales[user.lang].plantationSlotWatering}`, value: `\`${userPlantations[slotActiv || slot].niveau_arrosage || 0} ${locales[user.lang].plantationWateringTimes}\`` },
                     { name: `${locales[user.lang].plantationSlotStatus0}`, value: `\`${statut}\`` }
                 );
-                await buttonInteraction.update({ embeds: [slotEmbed], components: [plantingRow] });
+                try {
+                    await buttonInteraction.update({ embeds: [slotEmbed], components: [plantingRow] });
+                } catch (error) {
+                    console.error(error);
+                }
 
                 // Empêcher l'utilisateur de cliqué une seconde fois après avoir planté la graine | ça évite de lui supprimer l'objet plusieurs fois
                 // Verrouille les boutons
@@ -1012,7 +1045,11 @@ module.exports = {
                     }
                     embed2.addFields({ name: `🌿 Slot ${nb} :`, value: `${userType}\n${userFertilized}\n${userAntiParasite}\n${userArrosage}\n${userTimeleft}` })
                 }
-                await buttonInteraction.update({ embeds: [embed2], components: [row] });
+                try {
+                    await buttonInteraction.update({ embeds: [embed2], components: [row] });
+                } catch (error) {
+                    console.error(error);
+                }
                 return;
             }
             try {
