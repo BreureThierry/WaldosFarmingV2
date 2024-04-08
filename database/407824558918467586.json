@@ -3,24 +3,35 @@
   "nomServeur": "TusBluX",
   "nom": "tusblux",
   "xp": 30,
+  "lang": "en",
   "inventaire": {
-    "money": 654,
+    "money": 15,
     "graine": {
-      "purple": 4,
+      "purple": 15,
       "amnezia": 0,
       "kush": 0
     },
-    "plante": {},
+    "plante": {
+      "amnezia": 3,
+      "purple": 19
+    },
     "outils": {
       "arrosoir": 1,
-      "fertilisant": 17
+      "fertilisant": 12,
+      "produit_antiparasite": 2
     }
   },
   "plantations": {
-    "slot1": {},
+    "slot1": {
+      "type": "purple",
+      "fertilized": true,
+      "antiParasite": true,
+      "niveau_arrosage": 7,
+      "plantingTime": 1712514974462,
+      "readyTime": 1712516174462
+    },
     "slot2": {},
     "slot3": {},
     "slot4": {}
-  },
-  "lang": "en"
+  }
 }

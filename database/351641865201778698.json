@@ -2,54 +2,55 @@
   "id": "351641865201778698",
   "nomServeur": "LaBrioche",
   "nom": "labri0che",
-  "xp": 91460,
+  "xp": 107550,
+  "lang": "fr",
   "inventaire": {
-    "money": 15859,
+    "money": 22501,
     "graine": {
-      "purple": 39,
+      "purple": 29,
       "kush": 0,
       "amnezia": 0
     },
     "plante": {
-      "purple": 118
+      "purple": 52
     },
     "outils": {
       "arrosoir": 1,
       "fertilisant": 0,
-      "produit_antiparasite": 0
+      "produit_antiparasite": 32
     }
   },
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1712073687655,
-      "readyTime": 1712074587655,
+      "plantingTime": 1712593172604,
+      "readyTime": 1712594372604,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot2": {
       "type": "purple",
-      "plantingTime": 1712073693310,
-      "readyTime": 1712074593310,
+      "plantingTime": 1712593178236,
+      "readyTime": 1712594378236,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
-      "plantingTime": 1712073698875,
-      "readyTime": 1712074598875,
+      "plantingTime": 1712593185813,
+      "readyTime": 1712594385813,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1712073704090,
-      "readyTime": 1712074604090,
+      "plantingTime": 1712593191386,
+      "readyTime": 1712594391386,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     }
   }

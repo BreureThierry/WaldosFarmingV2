@@ -3,52 +3,55 @@
   "nomServeur": "🍀Pa0li83🐝",
   "nom": "paoli83_",
   "xp": 27000,
+  "lang": "fr",
   "inventaire": {
-    "money": 9467,
+    "money": 26107,
     "graine": {
-      "kush": 11,
-      "amnezia": 4,
-      "purple": 32
+      "kush": 4,
+      "amnezia": 3,
+      "purple": 0
     },
     "plante": {
-      "kush": 111,
-      "amnezia": 13,
-      "purple": 28
+      "amnezia": 5,
+      "purple": 5
     },
     "outils": {
       "arrosoir": 1,
-      "fertilisant": 0
+      "fertilisant": 3,
+      "produit_antiparasite": 6
     }
   },
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1712056718365,
-      "readyTime": 1712057618365,
-      "fertilized": false,
-      "antiParasite": false,
+      "plantingTime": 1712595412337,
+      "readyTime": 1712596612337,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot2": {
-      "type": "aucune",
-      "fertilized": false,
-      "antiParasite": false,
+      "type": "purple",
+      "plantingTime": 1712595405008,
+      "readyTime": 1712596605008,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
-      "plantingTime": 1712056698727,
-      "readyTime": 1712057598727,
-      "fertilized": false,
-      "antiParasite": false,
+      "plantingTime": 1712595393639,
+      "readyTime": 1712596593639,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1712056687568,
-      "readyTime": 1712057587568,
-      "fertilized": false,
-      "antiParasite": false,
+      "plantingTime": 1712595384876,
+      "readyTime": 1712596584876,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     }
   }

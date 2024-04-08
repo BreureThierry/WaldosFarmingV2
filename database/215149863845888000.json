@@ -3,19 +3,21 @@
   "nomServeur": "Sklion",
   "nom": "sklion.wlds",
   "xp": 6744,
+  "lang": "fr",
   "inventaire": {
-    "money": 1522,
+    "money": 1282,
     "graine": {
       "kush": 0,
       "amnezia": 0,
-      "purple": 8
+      "purple": 10
     },
     "plante": {
-      "purple": 2
+      "purple": 12
     },
     "outils": {
       "arrosoir": 1,
-      "fertilisant": 0
+      "fertilisant": 0,
+      "produit_antiparasite": 4
     }
   },
   "plantations": {

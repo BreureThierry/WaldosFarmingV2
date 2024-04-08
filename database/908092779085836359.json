@@ -2,17 +2,17 @@
   "id": "908092779085836359",
   "nomServeur": "Antho-BALLS",
   "nom": "antho168",
-  "xp": 56402,
+  "xp": 68402,
+  "lang": "fr",
   "inventaire": {
-    "money": 7634,
+    "money": 9638,
     "graine": {
-      "amnezia": 9,
-      "purple": 52,
+      "amnezia": 10,
+      "purple": 12,
       "kush": 0
     },
     "plante": {
-      "purple": 37,
-      "amnezia": 4
+      "purple": 38
     },
     "outils": {
       "arrosoir": 4,
@@ -23,34 +23,34 @@
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1712057447725,
-      "readyTime": 1712058347725,
-      "fertilized": false,
-      "antiParasite": false,
+      "plantingTime": 1712594150676,
+      "readyTime": 1712595350676,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot2": {
       "type": "purple",
-      "plantingTime": 1712057456387,
-      "readyTime": 1712058356387,
-      "fertilized": false,
-      "antiParasite": false,
+      "plantingTime": 1712594159688,
+      "readyTime": 1712595359688,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
-      "plantingTime": 1712057464306,
-      "readyTime": 1712058364306,
-      "fertilized": false,
-      "antiParasite": false,
+      "plantingTime": 1712594167917,
+      "readyTime": 1712595367917,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1712057474260,
-      "readyTime": 1712058374260,
-      "fertilized": false,
-      "antiParasite": false,
+      "plantingTime": 1712594176158,
+      "readyTime": 1712595376158,
+      "fertilized": true,
+      "antiParasite": true,
       "niveau_arrosage": 7
     }
   }

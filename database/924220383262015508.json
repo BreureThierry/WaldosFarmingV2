@@ -2,56 +2,53 @@
   "id": "924220383262015508",
   "nomServeur": "[JKR] Chris30130 || Waldos",
   "nom": "jkr.chris30130.waldos",
-  "xp": 77490,
+  "xp": 87610,
+  "lang": "fr",
   "inventaire": {
-    "money": 17931,
+    "money": 20991,
     "graine": {
-      "kush": 12,
-      "amnezia": 2,
-      "purple": 6
+      "kush": 22,
+      "amnezia": 6,
+      "purple": 11
     },
-    "plante": {
-      "purple": 5,
-      "amnezia": 2,
-      "kush": 11
-    },
+    "plante": {},
     "outils": {
       "arrosoir": 1,
       "fertilisant": 0,
-      "produit_antiparasite": 0
+      "produit_antiparasite": 13
     }
   },
   "plantations": {
     "slot1": {
-      "type": "kush",
-      "plantingTime": 1712074894578,
-      "readyTime": 1712075194578,
+      "type": "purple",
+      "plantingTime": 1712596093441,
+      "readyTime": 1712597293441,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot2": {
-      "type": "kush",
-      "plantingTime": 1712074907661,
-      "readyTime": 1712075207661,
+      "type": "purple",
+      "plantingTime": 1712596102083,
+      "readyTime": 1712597302083,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot3": {
-      "type": "kush",
-      "plantingTime": 1712074918720,
-      "readyTime": 1712075218720,
+      "type": "purple",
+      "plantingTime": 1712596111879,
+      "readyTime": 1712597311879,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot4": {
-      "type": "kush",
-      "plantingTime": 1712074929984,
-      "readyTime": 1712075229984,
+      "type": "purple",
+      "plantingTime": 1712596121090,
+      "readyTime": 1712597321090,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     }
   }

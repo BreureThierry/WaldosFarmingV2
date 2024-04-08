@@ -3,55 +3,53 @@
   "nomServeur": "DEADPOOL™",
   "nom": ".deadpool.666.",
   "xp": 47168,
+  "lang": "fr",
   "inventaire": {
-    "money": 7124,
+    "money": 22506,
     "graine": {
       "amnezia": 0,
-      "purple": 1,
-      "kush": 3
+      "purple": 12,
+      "kush": 0
     },
-    "plante": {
-      "purple": 88,
-      "kush": 3
-    },
+    "plante": {},
     "outils": {
       "arrosoir": 2,
       "fertilisant": 0,
-      "produit_antiparasite": 0
+      "produit_antiparasite": 6
     }
   },
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1712069491205,
-      "readyTime": 1712070391205,
+      "plantingTime": 1712596119156,
+      "readyTime": 1712597319156,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot2": {
       "type": "purple",
-      "plantingTime": 1712069500696,
-      "readyTime": 1712070400696,
+      "plantingTime": 1712596128224,
+      "readyTime": 1712597328224,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
-      "plantingTime": 1712069509893,
-      "readyTime": 1712070409893,
+      "plantingTime": 1712596137378,
+      "readyTime": 1712597337378,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1712069520839,
-      "readyTime": 1712070420839,
       "fertilized": false,
-      "antiParasite": false,
-      "niveau_arrosage": 7
+      "antiParasite": true,
+      "niveau_arrosage": 0,
+      "plantingTime": 1712596154953,
+      "readyTime": 1712597354953
     }
   }
 }

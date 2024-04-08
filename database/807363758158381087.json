@@ -2,51 +2,54 @@
   "id": "807363758158381087",
   "nomServeur": "tony2201/BALLS",
   "nom": "tony2201",
-  "xp": 33132,
+  "xp": 53132,
+  "lang": "fr",
   "inventaire": {
-    "money": 8255,
+    "money": 17362,
     "graine": {
-      "purple": 12,
+      "purple": 2,
       "amnezia": 0,
-      "kush": 7
-    },
-    "plante": {
-      "purple": 64,
       "kush": 1
     },
+    "plante": {
+      "kush": 3,
+      "purple": 20
+    },
     "outils": {
-      "arrosoir": 1
+      "arrosoir": 1,
+      "produit_antiparasite": 18,
+      "fertilisant": 9
     }
   },
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1712070924287,
-      "readyTime": 1712071824287,
+      "plantingTime": 1712596880274,
+      "readyTime": 1712598080274,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot2": {
       "type": "purple",
-      "plantingTime": 1712070933716,
-      "readyTime": 1712071833716,
+      "plantingTime": 1712596904810,
+      "readyTime": 1712598104810,
       "fertilized": false,
-      "antiParasite": false,
+      "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
-      "plantingTime": 1712070942470,
-      "readyTime": 1712071842470,
+      "plantingTime": 1712596914454,
+      "readyTime": 1712598114454,
       "fertilized": false,
       "antiParasite": false,
       "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1712070951211,
-      "readyTime": 1712071851211,
+      "plantingTime": 1712596924062,
+      "readyTime": 1712598124062,
       "fertilized": false,
       "antiParasite": false,
       "niveau_arrosage": 7
