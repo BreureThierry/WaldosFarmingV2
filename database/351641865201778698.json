@@ -5,51 +5,51 @@
   "xp": 107550,
   "lang": "fr",
   "inventaire": {
-    "money": 22501,
+    "money": 18181,
     "graine": {
-      "purple": 29,
+      "purple": 128,
       "kush": 0,
       "amnezia": 0
     },
     "plante": {
-      "purple": 52
+      "purple": 192
     },
     "outils": {
       "arrosoir": 1,
-      "fertilisant": 0,
-      "produit_antiparasite": 32
+      "fertilisant": 46,
+      "produit_antiparasite": 48
     }
   },
   "plantations": {
     "slot1": {
       "type": "purple",
-      "plantingTime": 1712593172604,
-      "readyTime": 1712594372604,
-      "fertilized": false,
+      "plantingTime": 1712680239199,
+      "readyTime": 1712681439199,
+      "fertilized": true,
       "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot2": {
       "type": "purple",
-      "plantingTime": 1712593178236,
-      "readyTime": 1712594378236,
-      "fertilized": false,
+      "plantingTime": 1712680248137,
+      "readyTime": 1712681448137,
+      "fertilized": true,
       "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot3": {
       "type": "purple",
-      "plantingTime": 1712593185813,
-      "readyTime": 1712594385813,
-      "fertilized": false,
+      "plantingTime": 1712680262639,
+      "readyTime": 1712681462639,
+      "fertilized": true,
       "antiParasite": true,
       "niveau_arrosage": 7
     },
     "slot4": {
       "type": "purple",
-      "plantingTime": 1712593191386,
-      "readyTime": 1712594391386,
-      "fertilized": false,
+      "plantingTime": 1712680271183,
+      "readyTime": 1712681471183,
+      "fertilized": true,
       "antiParasite": true,
       "niveau_arrosage": 7
     }

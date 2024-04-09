@@ -5,25 +5,53 @@
   "xp": 6744,
   "lang": "fr",
   "inventaire": {
-    "money": 1282,
+    "money": 2272,
     "graine": {
       "kush": 0,
       "amnezia": 0,
       "purple": 10
     },
     "plante": {
-      "purple": 12
+      "purple": 8
     },
     "outils": {
       "arrosoir": 1,
       "fertilisant": 0,
-      "produit_antiparasite": 4
+      "produit_antiparasite": 0
     }
   },
   "plantations": {
-    "slot1": {},
-    "slot2": {},
-    "slot3": {},
-    "slot4": {}
+    "slot1": {
+      "type": "purple",
+      "fertilized": true,
+      "antiParasite": true,
+      "niveau_arrosage": 7,
+      "plantingTime": 1712674558028,
+      "readyTime": 1712675758028
+    },
+    "slot2": {
+      "type": "purple",
+      "fertilized": true,
+      "antiParasite": true,
+      "niveau_arrosage": 7,
+      "plantingTime": 1712674538070,
+      "readyTime": 1712675738070
+    },
+    "slot3": {
+      "type": "purple",
+      "fertilized": true,
+      "antiParasite": true,
+      "niveau_arrosage": 7,
+      "plantingTime": 1712674519084,
+      "readyTime": 1712675719084
+    },
+    "slot4": {
+      "type": "purple",
+      "fertilized": true,
+      "antiParasite": true,
+      "niveau_arrosage": 7,
+      "plantingTime": 1712674499074,
+      "readyTime": 1712675699074
+    }
   }
 }

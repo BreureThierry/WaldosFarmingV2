@@ -130,7 +130,7 @@ module.exports = {
             const modal = new ModalBuilder().setCustomId('modalBoutique').setTitle(`${locales[user.lang].shopModalTitle}`);
 
             // Créer l'input de la quantité de l'objet
-            const amountChoiceInput = new TextInputBuilder().setCustomId('combien').setLabel(`${locales[user.lang].shopModalDescription}`).setMaxLength(1).setStyle(TextInputStyle.Short);
+            const amountChoiceInput = new TextInputBuilder().setCustomId('combien').setLabel(`${locales[user.lang].shopModalDescription}`).setMaxLength(2).setStyle(TextInputStyle.Short);
 
             // Créer la rangée d'action de la modal
             const amountChoiceActionRow = new ActionRowBuilder().addComponents(amountChoiceInput);

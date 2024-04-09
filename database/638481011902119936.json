@@ -5,9 +5,9 @@
   "xp": 2016,
   "lang": "fr",
   "inventaire": {
-    "money": 1935,
+    "money": 2100,
     "graine": {
-      "purple": 2,
+      "purple": 6,
       "amnezia": 0,
       "kush": 0
     },
@@ -22,34 +22,34 @@
     "slot1": {
       "type": "purple",
       "fertilized": false,
-      "antiParasite": true,
+      "antiParasite": false,
       "niveau_arrosage": 7,
-      "plantingTime": 1712527077688,
-      "readyTime": 1712528277688
+      "plantingTime": 1712612842161,
+      "readyTime": 1712614042161
     },
     "slot2": {
       "type": "purple",
       "fertilized": false,
       "antiParasite": false,
       "niveau_arrosage": 7,
-      "plantingTime": 1712527097760,
-      "readyTime": 1712528297760
+      "plantingTime": 1712612900014,
+      "readyTime": 1712614100014
     },
     "slot3": {
       "type": "purple",
       "fertilized": false,
       "antiParasite": false,
       "niveau_arrosage": 7,
-      "plantingTime": 1712527114770,
-      "readyTime": 1712528314770
+      "plantingTime": 1712612918070,
+      "readyTime": 1712614118070
     },
     "slot4": {
       "type": "purple",
       "fertilized": false,
       "antiParasite": false,
       "niveau_arrosage": 7,
-      "plantingTime": 1712527133247,
-      "readyTime": 1712528333247
+      "plantingTime": 1712612935268,
+      "readyTime": 1712614135268
     }
   }
 }

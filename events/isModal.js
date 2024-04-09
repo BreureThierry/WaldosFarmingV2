@@ -22,6 +22,15 @@ module.exports = {
         const embedMessage = new EmbedBuilder().setColor(color)
         const amount = parseInt(nbArticles);
 
+        // Charger les données de l'utilisateur
+        const user = await loadUser(interaction.user.id);
+        if (!user) { return interaction.reply({ content: `>>> ${locales[user.lang].shopNotGrower}`, ephemeral: true}); }
+
+        if (!user.lang) {
+            user.lang = config.bot.defaultLang;
+            console.log(`[isModal] Utilisateur sans langue définie. Langue par défaut : ${config.bot.defaultLang}`);
+        }
+
         if (modal.customId === 'combien') {
             if (isNaN(amount)) {
                 return await interaction.reply({ content: `>>> ${locales[user.lang].shopBadValue}\n`, ephemeral: true});
@@ -35,9 +44,6 @@ module.exports = {
             
             _quantite = amount;
 
-            // Charger les données de l'utilisateur
-            const user = await loadUser(interaction.user.id);
-            if (!user) { return interaction.reply({ content: `>>> ${locales[user.lang].shopNotGrower}`, ephemeral: true}); }
             const date = new Date().toLocaleString();
             if (!user.id) { return interaction.reply({ content: `>>> ${locales[user.lang].shopErrorLoading}`, ephemeral: true}); }
 
